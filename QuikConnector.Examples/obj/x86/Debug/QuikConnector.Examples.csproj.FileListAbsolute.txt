@@ -1,0 +1,8 @@
+c:\users\denis_lebedev\documents\visual studio 2012\ProjectsCpp\QuikConnector\QuikConnector.Examples\bin\x86\Debug\QuikConnector.Examples.exe.config
+c:\users\denis_lebedev\documents\visual studio 2012\ProjectsCpp\QuikConnector\QuikConnector.Examples\bin\x86\Debug\QuikConnector.Examples.exe
+c:\users\denis_lebedev\documents\visual studio 2012\ProjectsCpp\QuikConnector\QuikConnector.Examples\bin\x86\Debug\QuikConnector.Examples.pdb
+c:\users\denis_lebedev\documents\visual studio 2012\ProjectsCpp\QuikConnector\QuikConnector.Examples\bin\x86\Debug\QuikConnector.dll
+c:\users\denis_lebedev\documents\visual studio 2012\ProjectsCpp\QuikConnector\QuikConnector.Examples\bin\x86\Debug\QuikConnector.pdb
+c:\users\denis_lebedev\documents\visual studio 2012\ProjectsCpp\QuikConnector\QuikConnector.Examples\obj\x86\Debug\QuikConnector.Examples.csprojResolveAssemblyReference.cache
+c:\users\denis_lebedev\documents\visual studio 2012\ProjectsCpp\QuikConnector\QuikConnector.Examples\obj\x86\Debug\QuikConnector.Examples.exe
+c:\users\denis_lebedev\documents\visual studio 2012\ProjectsCpp\QuikConnector\QuikConnector.Examples\obj\x86\Debug\QuikConnector.Examples.pdb

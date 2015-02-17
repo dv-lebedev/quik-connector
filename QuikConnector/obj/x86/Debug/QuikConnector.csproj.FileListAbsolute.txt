@@ -1,0 +1,4 @@
+c:\users\denis_lebedev\documents\visual studio 2012\ProjectsCpp\QuikConnector\QuikConnector\bin\x86\Debug\QuikConnector.dll
+c:\users\denis_lebedev\documents\visual studio 2012\ProjectsCpp\QuikConnector\QuikConnector\bin\x86\Debug\QuikConnector.pdb
+c:\users\denis_lebedev\documents\visual studio 2012\ProjectsCpp\QuikConnector\QuikConnector\obj\x86\Debug\QuikConnector.dll
+c:\users\denis_lebedev\documents\visual studio 2012\ProjectsCpp\QuikConnector\QuikConnector\obj\x86\Debug\QuikConnector.pdb
