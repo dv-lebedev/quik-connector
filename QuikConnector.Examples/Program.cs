@@ -41,7 +41,7 @@ namespace QuikConnector.Examples
 
                 /*          *****        async transaction        ******
                 *
-                *       10 iterations of test, duration of 100 milliseconds
+                *       15 checks, for 100 milliseconds
                 *       then -> if the order still not executed - killorder
                 */
 
