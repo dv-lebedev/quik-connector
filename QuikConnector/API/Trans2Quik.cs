@@ -214,13 +214,13 @@ namespace QuikConnector
             UInt32 ResMsgSz = 50, EMsgSz = 50;
             rez = send_sync_transaction(transactionStr, ref ReplyCd, ref TransID, ref OrderNum,
                  ResMsg, ResMsgSz, ref ExtEC, EMsg, EMsgSz);
-            //Console.WriteLine("{0} {1}", (rez & 255), ResultToString(rez & 255));
-            //Console.WriteLine(" ExtEC={0}, EMsg={1}, EMsgSz={2}",
-            //    (ExtEC & 255).ToString(), ByteToString(EMsg), EMsgSz);
+            Console.WriteLine("{0} {1}", (rez & 255), ResultToString(rez & 255));
+            Console.WriteLine(" ExtEC={0}, EMsg={1}, EMsgSz={2}",
+                (ExtEC & 255).ToString(), ByteToString(EMsg), EMsgSz);
             String resStr = ByteToString(ResMsg);
             resStr = resStr.Trim();
-            //Console.WriteLine(" ReplyCode={0} TransID={1}  OrderNum={2} \n ResMsg={3}, ResMsgSz={4}",
-            //    ReplyCd, TransID, OrderNum, resStr, ResMsgSz);
+            Console.WriteLine(" ReplyCode={0} TransID={1}  OrderNum={2} \n ResMsg={3}, ResMsgSz={4}",
+                ReplyCd, TransID, OrderNum, resStr, ResMsgSz);
         }
         #endregion
 

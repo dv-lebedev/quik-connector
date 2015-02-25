@@ -22,7 +22,7 @@ namespace QuikConnector.Examples
 
                 AccountParameters account = new AccountParameters
                 {
-                     Account = "MyAccount",
+                    Account = "SPBFUT00902",
                       ClientCode = "Test"
                 };
 
@@ -37,7 +37,7 @@ namespace QuikConnector.Examples
                 quik.Subscribe(lkoh);
 
                 //sync transaction
-                double orderNum = lkoh.SendTransaction(Direction.Buy, 2000.50M, 10);
+                lkoh.SendTransaction(Direction.Buy, 2940.50M, 10, 15, 100);
 
                 /*          *****        async transaction        ******
                 *
@@ -45,13 +45,14 @@ namespace QuikConnector.Examples
                 *       then -> if the order still not executed - killorder
                 */
 
-                lkoh.SendTransactionAsync(Direction.Sell, 2010, 10, 15, 100)
-                    .ContinueWith((result) =>
-                        {
-                            //do something here
-                        });
+                //lkoh.SendTransactionAsync(Direction.Sell, 2010, 10, 15, 100)
+                //    .ContinueWith((result) =>
+                //        {
+                //            //do something here
+                //        });
 
-
+                Console.Read();
+                quik.Disconnect();
                 Console.ReadLine();
 
             }           
