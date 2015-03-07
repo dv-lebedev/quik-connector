@@ -31,7 +31,7 @@ namespace QuikConnector.Examples
 
                 quik.Subscribe(lkoh);
 
-                Orders.OrderResult result = lkoh.SendTransaction(Direction.Buy, 91000.00M, 1);
+                Orders.OrderResult result = lkoh.SendTransaction(Direction.Buy, 3000, 1);
 
                 Console.WriteLine("ReplyCode = {0}", result.ReplyCode);
                 Console.WriteLine("ResultCode = {0}", result.ResultCode);
