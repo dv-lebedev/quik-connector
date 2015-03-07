@@ -6,11 +6,11 @@ c:\users\denis_lebedev\documents\visual studio 2012\ProjectsCpp\QuikConnector\Qu
 c:\users\denis_lebedev\documents\visual studio 2012\ProjectsCpp\QuikConnector\QuikConnector.Examples\obj\x86\Debug\QuikConnector.Examples.csprojResolveAssemblyReference.cache
 c:\users\denis_lebedev\documents\visual studio 2012\ProjectsCpp\QuikConnector\QuikConnector.Examples\obj\x86\Debug\QuikConnector.Examples.exe
 c:\users\denis_lebedev\documents\visual studio 2012\ProjectsCpp\QuikConnector\QuikConnector.Examples\obj\x86\Debug\QuikConnector.Examples.pdb
-D:\GitHub\QuikConnector\QuikConnector.Examples\obj\x86\Debug\QuikConnector.Examples.csprojResolveAssemblyReference.cache
 D:\GitHub\QuikConnector\QuikConnector.Examples\bin\x86\Debug\QuikConnector.Examples.exe.config
 D:\GitHub\QuikConnector\QuikConnector.Examples\bin\x86\Debug\QuikConnector.Examples.exe
 D:\GitHub\QuikConnector\QuikConnector.Examples\bin\x86\Debug\QuikConnector.Examples.pdb
 D:\GitHub\QuikConnector\QuikConnector.Examples\bin\x86\Debug\QuikConnector.dll
 D:\GitHub\QuikConnector\QuikConnector.Examples\bin\x86\Debug\QuikConnector.pdb
+D:\GitHub\QuikConnector\QuikConnector.Examples\obj\x86\Debug\QuikConnector.Examples.csprojResolveAssemblyReference.cache
 D:\GitHub\QuikConnector\QuikConnector.Examples\obj\x86\Debug\QuikConnector.Examples.exe
 D:\GitHub\QuikConnector\QuikConnector.Examples\obj\x86\Debug\QuikConnector.Examples.pdb

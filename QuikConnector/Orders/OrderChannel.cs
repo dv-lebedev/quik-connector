@@ -4,20 +4,24 @@ using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 
+using QuikConnector.Orders;
+
 namespace QuikConnector
 {
-    public class OrderChannel
+    [Serializable]
+    public class OrderChannel 
     {
         public static long TransId { get; private set; }
 
-        public AccountParameters AccountParameters { get; protected set; }
+        public string Account { get; private set; }
+        public string ClientCode { get; set; }
 
         public string SecCode { get; set; }
         public string ClassCode { get; set; }
 
-        public OrderCallbackEventArgs LastOrderCallback { get; private set; }
+        public SortedDictionary<double, OrderCallbackEventArgs> Orders { get; protected set; }
+        public SortedDictionary<double, TradeCallbackEventArgs> Trades { get; protected set; }
 
-        public TradeCallbackEventArgs LastTradeCallback { get; private set; }
 
         public event EventHandler<OrderCallbackEventArgs> OrderCallback;
 
@@ -26,24 +30,16 @@ namespace QuikConnector
 
         protected OrderChannel()
         {
-            LastOrderCallback = new OrderCallbackEventArgs();
-        }
-
-
-        public OrderChannel(AccountParameters account, string secCode, string classCode)
-            : this()
-        {
-            AccountParameters = account;
-            SecCode = secCode;
-            ClassCode = classCode;
+            Orders = new SortedDictionary<double, OrderCallbackEventArgs>();
+            Trades = new SortedDictionary<double, TradeCallbackEventArgs>();
         }
 
         public OrderChannel(string account, string clientCode,
             string secCode, string classCode)
             : this()
         {
-            AccountParameters.Account = account;
-            AccountParameters.ClientCode = clientCode;
+            Account = account;
+            ClientCode = clientCode;
             SecCode = secCode;
             ClassCode = classCode;
         }
@@ -51,101 +47,118 @@ namespace QuikConnector
 
         public void OnOrderCallback(OrderCallbackEventArgs e)
         {
-            LastOrderCallback = e;
+            if (Orders.ContainsKey(e.Number))
+            {
+                Orders[e.Number] = e;
+            }
+            else
+            {
+                Orders.Add(e.Number, e);
+            }
 
             if (OrderCallback != null) OrderCallback(this, e);
         }
 
         public void OnTradeCallback(TradeCallbackEventArgs e)
         {
-            LastTradeCallback = e;
+            if (Trades.ContainsKey(e.Number))
+            {
+                Trades[e.Number] = e;
+            }
+            else
+            {
+                Trades.Add(e.Number, e);
+            }
 
             if (TradeCallback != null) TradeCallback(this, e);
         }
 
 
-        public double SendTransaction(Direction direction, decimal price, int volume)
+        public OrderResult SendTransaction(Direction direction, decimal price, int volume, string clientcode)
         {
             TransId++;
 
             string transactionString = string.Format(CultureInfo.InvariantCulture, "ACCOUNT={0};TYPE=L;TRANS_ID={1};CLASSCODE={2};SECCODE={3};ACTION=NEW_ORDER;OPERATION={4};PRICE={5};QUANTITY={6};CLIENT_CODE={7};",
-                AccountParameters.Account, TransId, ClassCode, SecCode, (char)direction, price, volume, AccountParameters.ClientCode);
+                Account, TransId, ClassCode, SecCode, (char)direction, price, volume, clientcode);
 
             double orderNum = 0;
 
-            QuikApi.send_sync_transaction_test(transactionString, ref orderNum);
+            long replyCode = 0;
 
-            return orderNum;
-        }
+            long result = QuikApi.send_sync_transaction_test(transactionString, ref orderNum, ref replyCode);
 
-        public bool SendTransaction(Direction direction, decimal price, int volume, int checkIterationCount, int checkIterationDelay)
-        {
-            TransId++;
-
-            string transactionString = string.Format(CultureInfo.InvariantCulture,"ACCOUNT={0};TYPE=L;TRANS_ID={1};CLASSCODE={2};SECCODE={3};ACTION=NEW_ORDER;OPERATION={4};PRICE={5};QUANTITY={6};CLIENT_CODE={7};",
-                AccountParameters.Account, TransId, ClassCode, SecCode, (char)direction, price, volume, AccountParameters.ClientCode);
-
-            Console.WriteLine(transactionString);
-            double orderNum = 0;
-
-            QuikApi.send_sync_transaction_test(transactionString, ref orderNum);
-
-            int count = 0;
-
-            while (count++ != checkIterationCount)
+            return new OrderResult
             {
-                if (LastOrderCallback.Number == orderNum && LastOrderCallback.Status == 0)
-                {
-                    return true;
-                }
-
-                Thread.Sleep(checkIterationDelay);
-            }
-
-            string kill = string.Format(CultureInfo.InvariantCulture, "CLASSCODE={0}; SECCODE={1}; TRANS_ID={2}; ACTION=KILL_ORDER; ORDER_KEY={3};",
-                ClassCode, SecCode, TransId, orderNum);
-
-            QuikApi.send_sync_transaction_test(kill, ref orderNum);
-
-            return false;
+                OrderNumber = orderNum,
+                ReplyCode = (ReplyCode)replyCode,
+                ResultCode = (ResultCode)result
+            };
         }
 
-        public async Task<double> SendTransactionAsync(Direction direction, decimal price, int volume)
+        public OrderResult SendTransaction(Direction direction, decimal price, int volume)
         {
-            return await Task<double>.Factory.StartNew(() =>
+            return SendTransaction(direction, price, volume, ClientCode);
+        }
+
+
+        public async Task<OrderResult> SendTransactionAsync(Direction direction, decimal price, int volume, string clientcode)
+        {
+            return await Task<OrderResult>.Factory.StartNew(() =>
                 {
-                    return SendTransaction(direction, price, volume);
+                    return SendTransaction(direction, price, volume, clientcode);
                 });
         }
 
-        public async Task<bool> SendTransactionAsync(Direction direction, decimal price, int volume, int checkIterationCount, int checkIterationDelay)
+        public async Task<OrderResult> SendTransactionAsync(Direction direction, decimal price, int volume)
         {
-            return await Task<bool>.Factory.StartNew(() =>
-                {
-                    return SendTransaction(direction, price, volume, checkIterationCount, checkIterationDelay);
-                });
+            return await Task<OrderResult>.Factory.StartNew(() =>
+            {
+                return SendTransaction(direction, price, volume);
+            });
         }
 
 
-        public double Buy(decimal price, int volume)
+        public OrderResult Buy(decimal price, int volume)
         {
             return SendTransaction(Direction.Buy, price, volume);
         }
 
-        public double Sell(decimal price, int volume)
+        public OrderResult Buy(decimal price, int volume, string clientcode)
+        {
+            return SendTransaction(Direction.Buy, price, volume, clientcode);
+        }
+
+        public OrderResult Sell(decimal price, int volume)
         {
             return SendTransaction(Direction.Sell, price, volume);
         }
 
+        public OrderResult Sell(decimal price, int volume, string clientcode)
+        {
+            return SendTransaction(Direction.Sell, price, volume, clientcode);
+        }
 
-        public double KillOrder(long transId, double orderNum)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="transId"></param>
+        /// <param name="orderNum"></param>
+        /// <returns>ReplyCode</returns>
+        public OrderResult KillOrder(long transId, double orderNum)
         {
             string kill = string.Format(CultureInfo.InvariantCulture, "CLASSCODE={0}; SECCODE={1}; TRANS_ID={2}; ACTION=KILL_ORDER; ORDER_KEY={3};",
                  ClassCode, SecCode, transId, orderNum);
 
-            QuikApi.send_sync_transaction_test(kill, ref orderNum);
+            long replyCode = 0;
 
-            return orderNum;
+            ResultCode result = (ResultCode)QuikApi.send_sync_transaction_test(kill, ref orderNum, ref replyCode);
+
+            return new OrderResult
+            {
+                OrderNumber = orderNum,
+                ResultCode = result,
+                ReplyCode = (ReplyCode)replyCode
+            };
         }
     }
 }

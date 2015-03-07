@@ -20,37 +20,28 @@ namespace QuikConnector.Examples
 
                 quik.Connect();
 
-                AccountParameters account = new AccountParameters
-                {
-                    Account = "SPBFUT00902",
-                      ClientCode = "Test"
-                };
 
-                OrderChannel lkoh = new OrderChannel(account, "LKOH", "EQBR");
+                OrderChannel lkoh = new OrderChannel("SPBFUT00902","Test", "RIH5", "SPBFUT");
 
                 lkoh.OrderCallback += (s, e) =>
                 {
-                    Console.WriteLine("TransId={0}, SecCode={1}, Price={2}, IsSell={3}, Status={4}",
+                    Console.WriteLine("CALLBACK: TransId={0}, SecCode={1}, Price={2}, IsSell={3}, Status={4}",
                         e.TransID, e.SecCode, e.Price, e.IsSell, e.Status);
                 };
 
                 quik.Subscribe(lkoh);
 
-                //sync transaction
-                lkoh.SendTransaction(Direction.Buy, 2940.50M, 10, 15, 100);
+                Orders.OrderResult result = lkoh.SendTransaction(Direction.Buy, 91000.00M, 1);
 
-                /*          *****        async transaction        ******
-                *
-                *       15 checks for 100 milliseconds
-                *       then -> if the order still not executed - killorder
-                */
+                Console.WriteLine(result.ReplyCode);
+                Console.WriteLine(result.ResultCode);
+               // Console.Read();
 
-                //lkoh.SendTransactionAsync(Direction.Sell, 2010, 10, 15, 100)
-                //    .ContinueWith((result) =>
-                //        {
-                //            //do something here
-                //        });
+                
+                Console.WriteLine("connect=" + quik.IsConnected);
+               //double reply =  lkoh.KillOrder(OrderChannel.TransId, num);
 
+               //Console.WriteLine("Reply Code=" + reply);
                 Console.Read();
                 quik.Disconnect();
                 Console.ReadLine();

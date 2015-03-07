@@ -47,13 +47,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Basics\AccountParameters.cs" />
+    <Compile Include="Orders\ReplyCode.cs" />
+    <Compile Include="Orders\ResultCode.cs" />
     <Compile Include="Callbacks\ConnectionStatusEventArgs.cs" />
     <Compile Include="Callbacks\OrderCallbackEventArgs.cs" />
     <Compile Include="Exceptions\ExecutingTerminalNotFound.cs" />
     <Compile Include="Orders\OrderChannel.cs" />
     <Compile Include="Orders\OrderDirection.cs" />
     <Compile Include="Orders\OrderType.cs" />
+    <Compile Include="Orders\Result.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Connection\QuikConnection.cs" />
     <Compile Include="Callbacks\TradeCallbackEventArgs.cs" />

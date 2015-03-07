@@ -3,10 +3,11 @@ using System.Runtime.InteropServices;
 
 namespace QuikConnector
 {
+
     /// <summary>
     /// TransToQuik.dll
     /// </summary>
-    internal static class QuikApi
+    public static class QuikApi
     {
         public const long TRANS2QUIK_SUCCESS = 0;
         public const long TRANS2QUIK_FAILED = 1;
@@ -204,12 +205,13 @@ namespace QuikConnector
             byte[] lpstrErrorMessage,
             UInt32 dwErrorMessageSize);
 
-        public static void send_sync_transaction_test(string transactionStr, ref double OrderNum)
+        public static long send_sync_transaction_test(string transactionStr, ref double OrderNum, ref long ReplyCd)
         {
             //Console.Write("\ntest_q.send_sync_transaction_test>\n");
             Byte[] EMsg = new Byte[50];
             Byte[] ResMsg = new Byte[50];
-            long ExtEC = -100, rez = -1, ReplyCd = 0;
+            long ExtEC = -100, rez = -1;
+
             int TransID = 0;
             UInt32 ResMsgSz = 50, EMsgSz = 50;
             rez = send_sync_transaction(transactionStr, ref ReplyCd, ref TransID, ref OrderNum,
@@ -221,6 +223,8 @@ namespace QuikConnector
             resStr = resStr.Trim();
             Console.WriteLine(" ReplyCode={0} TransID={1}  OrderNum={2} \n ResMsg={3}, ResMsgSz={4}",
                 ReplyCd, TransID, OrderNum, resStr, ResMsgSz);
+
+            return rez & 255;
         }
         #endregion
 

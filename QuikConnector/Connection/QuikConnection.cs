@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace QuikConnector
     {
         public string PathToQuik { get; set; }
 
-        public List<OrderChannel> Orders { get; protected set; }
+        public ICollection<OrderChannel> Channels { get; protected set; }
 
         public event EventHandler<ConnectionStatusEventArgs> ConnectionStatusChanged;
 
@@ -45,7 +46,7 @@ namespace QuikConnector
 
         protected QuikConnection()
         {
-            Orders = new List<OrderChannel>();
+            Channels = new List<OrderChannel>();
 
             QuikApi.OrderCallback += OnOrderCallback;
             QuikApi.TradeCallBack += OnTradeCallback;
@@ -106,26 +107,21 @@ namespace QuikConnector
             return false;
         }
 
-        public void Subscribe(OrderChannel order)
+        public void Subscribe(OrderChannel channel)
         {
-            Orders.Add(order);
+            Channels.Add(channel);
         }
 
-        public void Unsubscribe(OrderChannel order)
+
+        public bool Unsubscribe(OrderChannel channel)
         {
-            Orders.Remove(order);
+            return Channels.Remove(channel);
         }
 
         public void UnsubscribeAllOrders()
         {
-            Orders.Clear();
+            Channels.Clear();
         }
-
-        public void UnsubscribeAllOrders(Predicate<OrderChannel> match)
-        {
-            Orders.RemoveAll(match);
-        }
-
 
         public void Dispose()
         {
@@ -141,17 +137,17 @@ namespace QuikConnector
 
         protected void OnOrderCallback(object sender, OrderCallbackEventArgs value)
         {
-            foreach (OrderChannel order in Orders.Where(x => x.SecCode == value.SecCode))
+            foreach (var item in Channels.Where(i => i.SecCode == value.SecCode))
             {
-                order.OnOrderCallback(value);
+                item.OnOrderCallback(value);
             }
         }
 
         protected void OnTradeCallback(object sender, TradeCallbackEventArgs value)
         {
-            foreach (OrderChannel order in Orders.Where(x => x.SecCode == value.SecCode))
+            foreach (var item in Channels.Where(i => i.SecCode == value.SecCode))
             {
-                order.OnTradeCallback(value);
+                item.OnTradeCallback(value);
             }
         }
 
