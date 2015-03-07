@@ -21,7 +21,7 @@ namespace QuikConnector.Examples
                 quik.Connect();
 
 
-                OrderChannel lkoh = new OrderChannel("SPBFUT00902","Test", "RIH5", "SPBFUT");
+                OrderChannel lkoh = new OrderChannel("ACCOUNT","Test", "LKOH", "EQBR");
 
                 lkoh.OrderCallback += (s, e) =>
                 {
@@ -33,15 +33,14 @@ namespace QuikConnector.Examples
 
                 Orders.OrderResult result = lkoh.SendTransaction(Direction.Buy, 91000.00M, 1);
 
-                Console.WriteLine(result.ReplyCode);
-                Console.WriteLine(result.ResultCode);
+                Console.WriteLine("ReplyCode = {0}", result.ReplyCode);
+                Console.WriteLine("ResultCode = {0}", result.ResultCode);
                // Console.Read();
 
                 
-                Console.WriteLine("connect=" + quik.IsConnected);
-               //double reply =  lkoh.KillOrder(OrderChannel.TransId, num);
+                lkoh.KillOrder(OrderChannel.TransId, num);
 
-               //Console.WriteLine("Reply Code=" + reply);
+
                 Console.Read();
                 quik.Disconnect();
                 Console.ReadLine();
