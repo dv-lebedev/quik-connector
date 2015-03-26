@@ -1,4 +1,7 @@
 ﻿using System;
+using QuikConnector.API;
+using QuikConnector.Data;
+using QuikConnector.Orders;
 
 namespace QuikConnector.Examples
 {
@@ -6,46 +9,43 @@ namespace QuikConnector.Examples
     {
         static void Main(string[] args)
         {
-            using (var quik = new QuikConnection())
+            var parameters = new ConnectorParameters
             {
-                quik.Connected += (s, e) => 
-                    { 
-                        Console.WriteLine("QUIK is connected."); 
-                    };
+                Account = "MyAccount",
+                ClientCode = "ClientCode",
+                Path = Terminal.GetPathToActiveQuik(),
+                SecuritiesTableName = "SecuritiesTable",
+                ServerName = "QServer"
+            };
 
-                quik.Disconnected += (s, e) => 
-                    { 
-                        Console.WriteLine("QUIK is disconnected."); 
-                    };
+            using (QuikConnector connector = new QuikConnector(parameters))
+            {
+                connector.Connected += (sender, e) => { Console.WriteLine("Connected."); };
+                connector.ImportStarted += (sender, e) => { Console.WriteLine("Import started."); };
 
-                quik.Connect();
+                connector.Connect();
+                connector.StartImport();
 
+                connector.SecuritiesTable["RIM5"].Updated += RIM5_Updated;
 
-                OrderChannel lkoh = new OrderChannel("ACCOUNT","Test", "LKOH", "EQBR");
-
-                lkoh.OrderCallback += (s, e) =>
-                {
-                    Console.WriteLine("CALLBACK: TransId={0}, SecCode={1}, Price={2}, IsSell={3}, Status={4}",
-                        e.TransID, e.SecCode, e.Price, e.IsSell, e.Status);
-                };
-
-                quik.Subscribe(lkoh);
-
-                Orders.OrderResult result = lkoh.SendTransaction(Direction.Buy, 3000, 1);
-
-                Console.WriteLine("ReplyCode = {0}", result.ReplyCode);
-                Console.WriteLine("ResultCode = {0}", result.ResultCode);
-               // Console.Read();
-
-                
-                lkoh.KillOrder(OrderChannel.TransId, num);
-
-
-                Console.Read();
-                quik.Disconnect();
                 Console.ReadLine();
 
-            }           
-        }//end of Main
+
+                OrderChannel lkoh = connector.CreateOrderChannel("LKOH", "EQBR");
+
+                OrderResult result = lkoh.SendTransaction(Direction.Buy, 3000, 1);
+
+                lkoh.KillOrder(OrderChannel.TransId, result.OrderNumber);
+                
+                Console.ReadLine();
+            }
+
+        }
+
+        static void RIM5_Updated(object sender, Data.Channels.Security e)
+        {
+            Console.WriteLine("{0}, {1}", e.SecCode, e.PriceOfLastDeal);
+        }
+
     }
 }

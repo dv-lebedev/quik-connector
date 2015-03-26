@@ -38,6 +38,9 @@
     <OutputPath>bin\x86\Release\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NDde">
+      <HintPath>C:\Users\Denis_Lebedev\Documents\Visual Studio 2012\Projects\TradeMachine\TradeMachine\bin\x86\Debug\NDde.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -47,6 +50,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\Terminal.cs" />
+    <Compile Include="ConnectorParameters.cs" />
+    <Compile Include="Data\Channels\SecuritiesTableChannel.cs" />
+    <Compile Include="Data\Channels\Security.cs" />
+    <Compile Include="Data\DataChannel.cs" />
+    <Compile Include="Data\DataTable.cs" />
+    <Compile Include="Data\QDataServer.cs" />
     <Compile Include="Orders\ReplyCode.cs" />
     <Compile Include="Orders\ResultCode.cs" />
     <Compile Include="Callbacks\ConnectionStatusEventArgs.cs" />
@@ -60,7 +70,9 @@
     <Compile Include="Connection\QuikConnection.cs" />
     <Compile Include="Callbacks\TradeCallbackEventArgs.cs" />
     <Compile Include="API\Trans2Quik.cs" />
+    <Compile Include="QuikConnector.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

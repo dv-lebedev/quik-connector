@@ -4,5 +4,7 @@ c:\users\denis_lebedev\documents\visual studio 2012\ProjectsCpp\QuikConnector\Qu
 c:\users\denis_lebedev\documents\visual studio 2012\ProjectsCpp\QuikConnector\QuikConnector\obj\x86\Debug\QuikConnector.pdb
 D:\GitHub\QuikConnector\QuikConnector\bin\x86\Debug\QuikConnector.dll
 D:\GitHub\QuikConnector\QuikConnector\bin\x86\Debug\QuikConnector.pdb
+D:\GitHub\QuikConnector\QuikConnector\bin\x86\Debug\NDde.dll
+D:\GitHub\QuikConnector\QuikConnector\obj\x86\Debug\QuikConnector.csprojResolveAssemblyReference.cache
 D:\GitHub\QuikConnector\QuikConnector\obj\x86\Debug\QuikConnector.dll
 D:\GitHub\QuikConnector\QuikConnector\obj\x86\Debug\QuikConnector.pdb

@@ -3,14 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using QuikConnector.Orders;
 
 namespace QuikConnector
 {
+    [Serializable]
     public class QuikConnection : IDisposable
     {
         public string PathToQuik { get; set; }
 
-        public ICollection<OrderChannel> Channels { get; protected set; }
+        public List<OrderChannel> Channels { get; protected set; }
 
         public event EventHandler<ConnectionStatusEventArgs> ConnectionStatusChanged;
 
@@ -19,6 +21,10 @@ namespace QuikConnector
         public event EventHandler Disconnected;
 
         public event EventHandler Disposed;
+
+        public string Account { get; set; }
+
+        public string ClientCode { get; set; }
 
         public bool IsQuikConnected
         {
@@ -60,27 +66,6 @@ namespace QuikConnector
         }
 
 
-        public QuikConnection(bool tryToFindPath = true)
-            : this()
-        {
-            if (tryToFindPath)
-            {
-                if ((PathToQuik = GetPathToActiveQuik()) == null)
-                {
-                    throw new ExecutingTerminalNotFound();
-                }
-            }
-        }
-
-        public string GetPathToActiveQuik()
-        {
-            return Process.GetProcessesByName("info")
-                .FirstOrDefault()
-                .MainModule
-                .FileName
-                .Replace("info.exe", "");
-        }
-
         public bool Connect()
         {
             if (QuikApi.TRANS2QUIK_SUCCESS
@@ -107,6 +92,17 @@ namespace QuikConnector
             return false;
         }
 
+
+        public OrderChannel CreateOrderChannel(string secCode, string classCode)
+        {
+            var channel = new OrderChannel(Account, ClientCode, secCode, classCode);
+
+            Subscribe(channel);
+
+            return channel;
+        }
+
+
         public void Subscribe(OrderChannel channel)
         {
             Channels.Add(channel);
@@ -118,10 +114,18 @@ namespace QuikConnector
             return Channels.Remove(channel);
         }
 
+
+        public int Unsubscribe(Predicate<OrderChannel> channels)
+        {
+            return Channels.RemoveAll(channels);
+        }
+
+
         public void UnsubscribeAllOrders()
         {
             Channels.Clear();
         }
+
 
         public void Dispose()
         {

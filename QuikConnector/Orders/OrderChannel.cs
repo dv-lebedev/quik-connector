@@ -95,6 +95,34 @@ namespace QuikConnector
             };
         }
 
+        public OrderResult SendTransaction(Direction direction, int volume, string clientcode)
+        {
+            TransId++;
+
+            string transactionString = string.Format(CultureInfo.InvariantCulture, "ACCOUNT={0};TYPE=M;TRANS_ID={1};CLASSCODE={2};SECCODE={3};ACTION=NEW_ORDER;OPERATION={4};PRICE=0;QUANTITY={5};CLIENT_CODE={6};",
+                Account, TransId, ClassCode, SecCode, (char)direction, volume, clientcode);
+
+            double orderNum = 0;
+
+            long replyCode = 0;
+
+            long result = QuikApi.send_sync_transaction_test(transactionString, ref orderNum, ref replyCode);
+
+            return new OrderResult
+            {
+                OrderNumber = orderNum,
+                ReplyCode = (ReplyCode)replyCode,
+                ResultCode = (ResultCode)result
+            };
+        }
+
+
+        public OrderResult SendTransaction(Direction direction, int volume)
+        {
+            return SendTransaction(direction, volume, ClientCode);
+        }
+
+
         public OrderResult SendTransaction(Direction direction, decimal price, int volume)
         {
             return SendTransaction(direction, price, volume, ClientCode);
@@ -128,6 +156,16 @@ namespace QuikConnector
             return SendTransaction(Direction.Buy, price, volume, clientcode);
         }
 
+        public OrderResult Buy(int volume, string clientcode)
+        {
+            return SendTransaction(Direction.Buy, volume, clientcode);
+        }
+
+        public OrderResult Buy(int volume)
+        {
+            return SendTransaction(Direction.Buy, volume);
+        }
+
         public OrderResult Sell(decimal price, int volume)
         {
             return SendTransaction(Direction.Sell, price, volume);
@@ -136,6 +174,16 @@ namespace QuikConnector
         public OrderResult Sell(decimal price, int volume, string clientcode)
         {
             return SendTransaction(Direction.Sell, price, volume, clientcode);
+        }
+
+        public OrderResult Sell(int volume)
+        {
+            return SendTransaction(Direction.Sell, volume);
+        }
+
+        public OrderResult Sell(int volume, string clientcode)
+        {
+            return SendTransaction(Direction.Sell, volume, clientcode);
         }
 
         /// <summary>
