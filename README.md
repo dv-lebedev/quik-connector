@@ -8,6 +8,9 @@
 
 ```c#
 using System;
+using QuikConnector.API;
+using QuikConnector.Data;
+using QuikConnector.Orders;
 
 namespace QuikConnector.Examples
 {
@@ -15,56 +18,44 @@ namespace QuikConnector.Examples
     {
         static void Main(string[] args)
         {
-            using (var quik = new QuikConnection())
+            var parameters = new ConnectorParameters
             {
-                quik.Connected += (s, e) => 
-                    { 
-                        Console.WriteLine("QUIK is connected."); 
-                    };
+                Account = "MyAccount",
+                ClientCode = "ClientCode",
+                Path = Terminal.GetPathToActiveQuik(),
+                SecuritiesTableName = "SecuritiesTable",
+                ServerName = "QServer"
+            };
 
-                quik.Disconnected += (s, e) => 
-                    { 
-                        Console.WriteLine("QUIK is disconnected."); 
-                    };
+            using (QuikConnector connector = new QuikConnector(parameters))
+            {
+                connector.Connected += (sender, e) => { Console.WriteLine("Connected."); };
+                connector.ImportStarted += (sender, e) => { Console.WriteLine("Import started."); };
 
-                quik.Connect();
+                connector.Connect();
+                connector.StartImport();
 
-                AccountParameters account = new AccountParameters
-                {
-                     Account = "MyAccount",
-                      ClientCode = "Test"
-                };
-
-                OrderChannel lkoh = new OrderChannel(account, "LKOH", "EQBR");
-
-                lkoh.OrderCallback += (s, e) =>
-                {
-                    Console.WriteLine("TransId={0}, SecCode={1}, Price={2}, IsSell={3}, Status={4}",
-                        e.TransID, e.SecCode, e.Price, e.IsSell, e.Status);
-                };
-
-                quik.Subscribe(lkoh);
-
-                //sync transaction
-                double orderNum = lkoh.SendTransaction(Direction.Buy, 2000.50M, 10);
-
-                /*          *****        async transaction        ******
-                *
-                *       15 checks for 100 milliseconds
-                *       then -> if the order still not executed - killorder
-                */
-
-                lkoh.SendTransactionAsync(Direction.Sell, 2010, 10, 15, 100)
-                    .ContinueWith((result) =>
-                        {
-                            //do something here
-                        });
-
+                connector.SecuritiesTable["RIM5"].Updated += RIM5_Updated;
 
                 Console.ReadLine();
 
-            }           
-        }//end of Main
+
+                OrderChannel lkoh = connector.CreateOrderChannel("LKOH", "EQBR");
+
+                OrderResult result = lkoh.SendTransaction(Direction.Buy, 3000, 1);
+
+                lkoh.KillOrder(OrderChannel.TransId, result.OrderNumber);
+                
+                Console.ReadLine();
+            }
+
+        }
+
+        static void RIM5_Updated(object sender, Data.Channels.Security e)
+        {
+            Console.WriteLine("{0}, {1}", e.SecCode, e.PriceOfLastDeal);
+        }
+
     }
 }
 ```
