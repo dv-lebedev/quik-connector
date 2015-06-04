@@ -31,15 +31,21 @@ namespace QuikConnector.Examples
             using (QConnector connector = new QConnector(parameters))
             {
                 connector.Connected += (sender, e) => { Console.WriteLine("Connected."); };
+
                 connector.ImportStarted += (sender, e) => { Console.WriteLine("Import started."); };
 
                 connector.Connect();
                 connector.StartImport();
 
-                connector.SecuritiesTable["LKOH"].Updated += RIM5_Updated;
 
+                DataTable<Security> securitiesTable = new DataTable<Security>();
+
+                connector.AddDataChannel("SecuritiesTable", securitiesTable);
+
+                securitiesTable.Updated += secuirties_Updated;
 
                 Console.ReadLine();
+
 
                 OrderChannel lkoh = connector.CreateOrderChannel("LKOH", "EQBR");
 
@@ -52,11 +58,40 @@ namespace QuikConnector.Examples
 
         }
 
-        static void RIM5_Updated(object sender, Data.Channels.Security e)
+        static void secuirties_Updated(object sender, System.Collections.Generic.List<Security> item)
         {
-            Console.WriteLine("{0}, {1}, {2}, {3}, {4}, {5}",  e.ShortName, e.Code, e.Class, e.Bid, e.Ask, e.Price);
+            var lkoh = item.Find(i => i.Code == "LKOH");
+
+            if (lkoh != null)
+            {
+                Console.WriteLine("{0}, {1}, {2}, {3}, {4}, {5}",
+                    lkoh.ShortName, lkoh.Code, lkoh.Class, lkoh.Bid, lkoh.Ask, lkoh.Price);
+            }
         }
 
+    }
+
+    public class Security
+    {
+        public string ShortName { get; set; }
+
+        public string Code { get; set; }
+
+        public string Class { get; set; }
+
+        public string Status { get; set; }
+
+        public decimal Bid { get; set; }
+
+        public decimal BidVolume { get; set; }
+
+        public decimal Ask { get; set; }
+
+        public decimal AskVolume { get; set; }
+
+        public decimal Price { get; set; }
+
+        public decimal Lot { get; set; }
     }
 }
 

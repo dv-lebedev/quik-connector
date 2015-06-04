@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using QuikConnector.API;
 using QuikConnector.Data;
-using QuikConnector.Data.Channels;
 
 namespace QuikConnector.Core
 {
@@ -42,8 +41,6 @@ namespace QuikConnector.Core
         private QuikConnection connection;
 
         private QDataServer server;
-
-        private SecuritiesTableChannel securitiesTable;
 
 
         #region EVENTS
@@ -124,15 +121,6 @@ namespace QuikConnector.Core
         #endregion
 
 
-        public SecuritiesTableChannel SecuritiesTable
-        {
-            get
-            {
-                 return securitiesTable;
-            }
-        }
-
-
         public List<OrderChannel> OrderChannels
         {
             get
@@ -162,8 +150,6 @@ namespace QuikConnector.Core
 
             server = new QDataServer(parameters.ServerName);
 
-            securitiesTable = new SecuritiesTableChannel();
-            server.AddChannel(parameters.SecuritiesTableName, securitiesTable);
         }
 
 

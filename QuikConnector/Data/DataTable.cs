@@ -1,148 +1,64 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace QuikConnector.Data
 {
-    public sealed class XlTable : IDisposable
+    public class DataTable<T> : DataChannel where T : new()
     {
-        public enum BlockType
+        PropertyInfo[] properties;
+
+        public List<T> Rows { get; protected set; }
+
+        public event EventHandler<List<T>> Updated;
+
+        public DataTable()
         {
-            Table = 0x10,
+            properties = typeof(T).GetProperties();
 
-            Float = 0x01,
-            String = 0x02,
-            Bool = 0x03,
-            Error = 0x04,
-            Blank = 0x05,
-            Int = 0x06,
-            Skip = 0x07,
-
-            Unknown = 0x10000,
-            Bad = 0x10001
+            Rows = new List<T>();
         }
 
-        const int codepage = 1251;
-
-        const int wsize = 2;
-        const int fsize = 8;
-        const int hsize = wsize * 2;
-
-        byte[] data;
-
-        MemoryStream ms;
-        BinaryReader br;
-
-        int blocksize;
-
-        public int Rows { get; private set; }
-        public int Columns { get; private set; }
-
-        public BlockType ValueType { get; private set; }
-
-        public double FloatValue { get; private set; }
-        public string StringValue { get; private set; }
-        public ushort WValue { get; private set; }
-
-        public XlTable(byte[] data)
+        protected override void ProcessTable(XlTable xt)
         {
-            this.data = data;
+            Rows.Clear();
 
-            ms = new MemoryStream(data);
-            br = new BinaryReader(ms, Encoding.ASCII);
-
-            if (data.Length < wsize * 4 || (BlockType)br.ReadUInt16() != BlockType.Table)
-                SetBadDataStatus();
-
-            ms.Seek(wsize, SeekOrigin.Current);
-
-            Rows = br.ReadUInt16();
-            Columns = br.ReadUInt16();
-
-            ValueType = BlockType.Unknown;
-        }
-
-        void SetBadDataStatus()
-        {
-            ValueType = BlockType.Bad;
-            blocksize = 1;
-        }
-
-        public void ReadValue()
-        {
-
-            if (ValueType == BlockType.Unknown)
+            for (int row = 0; row < xt.Rows; row++)
             {
-                if (ms.Position + hsize > data.Length)
-                    SetBadDataStatus();
-                else
-                {
-                    ValueType = (BlockType)br.ReadUInt16();
-                    blocksize = br.ReadUInt16();
+                T item = new T();
 
-                    if (ms.Position + blocksize > data.Length)
-                        SetBadDataStatus();
+                for (int col = 0; col < xt.Columns; col++)
+                {
+                    xt.ReadValue();
+
+                    switch (xt.ValueType)
+                    {
+                        case XlTable.BlockType.Float:
+                            properties[col].SetValue(item, (decimal)xt.FloatValue);
+                            break;
+
+                        case XlTable.BlockType.String:
+                            if (xt.StringValue != string.Empty)
+                                properties[col].SetValue(item, xt.StringValue);
+                            break;
+
+                        default:
+                            break;
+                    }
                 }
+
+                Rows.Add(item);
             }
 
-            if (blocksize > 0)
-                switch (ValueType)
-                {
-                    case BlockType.Float:
-                        blocksize -= fsize;
-
-                        if (blocksize >= 0)
-                            FloatValue = br.ReadDouble();
-                        else
-                            SetBadDataStatus();
-
-                        break;
-
-                    case BlockType.String:
-                        int strlen = ms.ReadByte();
-                        blocksize -= strlen + 1;
-
-                        if (blocksize >= 0)
-                        {
-                            StringValue = Encoding.GetEncoding(codepage).GetString(data, (int)ms.Position, strlen);
-                            br.BaseStream.Seek(strlen, SeekOrigin.Current);
-                        }
-                        else
-                            SetBadDataStatus();
-
-                        break;
-
-                    case BlockType.Bool:
-                    case BlockType.Error:
-                    case BlockType.Blank:
-                    case BlockType.Int:
-                    case BlockType.Skip:
-                        blocksize -= wsize;
-
-                        if (blocksize >= 0)
-                            WValue = br.ReadUInt16();
-                        else
-                            SetBadDataStatus();
-                        break;
-                    default:
-                        SetBadDataStatus();
-                        break;
-                }
-            else
-            {
-                ValueType = BlockType.Unknown;
-                ReadValue();
-            }
+            OnUpdated(this, Rows);
         }
 
-        public void Dispose()
+        protected virtual void OnUpdated(object sender, List<T> items)
         {
-            if (br != null) br.Dispose();
-
-            if (ms != null) ms.Dispose();
+            if (Updated != null) Updated(sender, items);
         }
     }
 }

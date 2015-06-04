@@ -52,11 +52,9 @@
   <ItemGroup>
     <Compile Include="API\Terminal.cs" />
     <Compile Include="ConnectorParameters.cs" />
-    <Compile Include="Data\Channels\SecuritiesTableChannel.cs" />
-    <Compile Include="Data\Channels\Security.cs" />
-    <Compile Include="Data\Channels\SecurityContainer.cs" />
     <Compile Include="Data\DataChannel.cs" />
     <Compile Include="Data\DataTable.cs" />
+    <Compile Include="Data\XlTable.cs" />
     <Compile Include="Data\QDataServer.cs" />
     <Compile Include="Orders\ReplyCode.cs" />
     <Compile Include="Orders\ResultCode.cs" />

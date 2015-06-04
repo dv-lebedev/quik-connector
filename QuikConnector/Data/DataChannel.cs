@@ -23,6 +23,5 @@ namespace QuikConnector.Data
         }
 
         protected abstract void ProcessTable(XlTable xt);
-
     }
 }
