@@ -7,9 +7,9 @@ using QuikConnector.API;
 using QuikConnector.Data;
 using QuikConnector.Data.Channels;
 
-namespace QuikConnector
+namespace QuikConnector.Core
 {
-    public class QuikConnector : IDisposable
+    public class QConnector : IDisposable
     {
 
         public string Account
@@ -124,11 +124,11 @@ namespace QuikConnector
         #endregion
 
 
-        public Dictionary<string, Security> SecuritiesTable
+        public SecuritiesTableChannel SecuritiesTable
         {
             get
             {
-                return securitiesTable.Values;
+                 return securitiesTable;
             }
         }
 
@@ -151,7 +151,7 @@ namespace QuikConnector
         }
 
  
-        public QuikConnector(ConnectorParameters parameters)
+        public QConnector(ConnectorParameters parameters)
         {
             connection = new QuikConnection(parameters.Path)
             {

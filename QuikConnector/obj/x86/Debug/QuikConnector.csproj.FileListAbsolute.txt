@@ -8,3 +8,8 @@ D:\GitHub\QuikConnector\QuikConnector\bin\x86\Debug\NDde.dll
 D:\GitHub\QuikConnector\QuikConnector\obj\x86\Debug\QuikConnector.csprojResolveAssemblyReference.cache
 D:\GitHub\QuikConnector\QuikConnector\obj\x86\Debug\QuikConnector.dll
 D:\GitHub\QuikConnector\QuikConnector\obj\x86\Debug\QuikConnector.pdb
+C:\GitHub\QuikConnector\QuikConnector\bin\x86\Debug\QuikConnector.dll
+C:\GitHub\QuikConnector\QuikConnector\bin\x86\Debug\QuikConnector.pdb
+C:\GitHub\QuikConnector\QuikConnector\bin\x86\Debug\NDde.dll
+C:\GitHub\QuikConnector\QuikConnector\obj\x86\Debug\QuikConnector.dll
+C:\GitHub\QuikConnector\QuikConnector\obj\x86\Debug\QuikConnector.pdb

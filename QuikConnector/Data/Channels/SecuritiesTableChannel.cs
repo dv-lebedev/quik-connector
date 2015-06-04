@@ -3,30 +3,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reflection;
 
 namespace QuikConnector.Data.Channels
 {
     public class SecuritiesTableChannel : DataChannel
     {
-        public Dictionary<string, Security> Values { get; protected set; }
+        private Dictionary<string, SecurityContainer> Securities { get;  set; }
+
+        private PropertyInfo[] SecurityProperties;
 
         public SecuritiesTableChannel()
         {
-            Values = new Dictionary<string, Security>();
+            Securities = new Dictionary<string, SecurityContainer>();
+
+            SecurityProperties = typeof(Security).GetProperties();
         }
 
-        public Security this[string key]
-        {
+        public SecurityContainer this[string key]
+        {  
             get
             {
-                if (Values.ContainsKey(key))
+                if (Securities.ContainsKey(key))
                 {
-                    return Values[key];
+                    return Securities[key];
                 }
                 else
                 {
-                    Values.Add(key, new Security());
-                    return Values[key];
+                    Securities.Add(key, new SecurityContainer());
+                    return Securities[key];
                 }
             }
         }
@@ -40,27 +45,30 @@ namespace QuikConnector.Data.Channels
                 for (int col = 0; col < xt.Columns; col++)
                 {
                     xt.ReadValue();
-
+                    
                     switch (xt.ValueType)
                     {
                         case XlTable.BlockType.Float:
-                            mtrow.SetValue(col, xt.FloatValue);
+                            SecurityProperties[col].SetValue(mtrow,(decimal) xt.FloatValue);
                             break;
                         case XlTable.BlockType.String:
-                            mtrow.SetValue(col, xt.StringValue);
+                            if (xt.StringValue != string.Empty)
+                            {
+                                SecurityProperties[col].SetValue(mtrow, xt.StringValue);
+                            }
                             break;
                         default:
                             break;
                     }
                 }
 
-                if (Values.ContainsKey(mtrow.SecCode))
+                if (Securities.ContainsKey(mtrow.Code))
                 {
-                    Values[mtrow.SecCode].Update(mtrow);
+                    Securities[mtrow.Code].Value = mtrow;
                 }
                 else
                 {
-                    Values.Add(mtrow.SecCode, mtrow);
+                    Securities.Add(mtrow.Code, new SecurityContainer { Value = mtrow });
                 }
             }
         }
