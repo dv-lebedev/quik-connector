@@ -15,7 +15,6 @@ namespace QuikConnector.Examples
                 Account = "MyAccount",
                 ClientCode = "ClientCode",
                 Path = Terminal.GetPathToActiveQuik(),
-                SecuritiesTableName = "SecuritiesTable",
                 ServerName = "QServer"
             };
 
@@ -29,9 +28,7 @@ namespace QuikConnector.Examples
                 connector.StartImport();
 
 
-                DataTable<Security> securitiesTable = new DataTable<Security>();
-
-                connector.AddDataChannel("SecuritiesTable", securitiesTable);
+                IDataTable<Security> securitiesTable = connector.AddDataTable<Security>();
 
                 securitiesTable.Updated += secuirties_Updated;
 
@@ -62,6 +59,7 @@ namespace QuikConnector.Examples
 
     }
 
+    [Table(Name="SecuritiesTable")]
     public class Security
     {
         public string ShortName { get; set; }

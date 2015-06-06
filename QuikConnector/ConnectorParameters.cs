@@ -12,6 +12,5 @@ namespace QuikConnector.Core
         public string ClientCode { get; set; }
         public string Path { get; set; }
         public string ServerName { get; set; }
-        public string SecuritiesTableName { get; set; }
     }
 }

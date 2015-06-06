@@ -5,7 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using QuikConnector.API;
 using QuikConnector.Data;
-
+using System.Reflection;
+using QuikConnector.Exceptions;
 namespace QuikConnector.Core
 {
     public class QConnector : IDisposable
@@ -215,6 +216,20 @@ namespace QuikConnector.Core
             OnDataChannelAdded(this, value);
         }
 
+        public DataTable<T> AddDataTable<T>() where T : new()
+        {
+            TableAttribute attr = typeof(T).GetTypeInfo().GetCustomAttribute<TableAttribute>();
+
+            if (attr == null)
+                throw new AttributeNotFoundException(typeof(TableAttribute));
+
+            DataTable<T> table = new DataTable<T>();
+
+            AddDataChannel(attr.Name, table);
+
+            return table;
+        }
+
         public bool RemoveDataChannel(string key)
         {
             if (server.Channels.Remove(key))
@@ -225,6 +240,16 @@ namespace QuikConnector.Core
             }
 
             return false;
+        }
+
+        public bool RemoveDataTable<T>()
+        {
+            TableAttribute attr = typeof(T).GetTypeInfo().GetCustomAttribute<TableAttribute>();
+
+            if (attr == null)
+                throw new AttributeNotFoundException(typeof(TableAttribute));
+
+            return RemoveDataChannel(attr.Name);
         }
 
 

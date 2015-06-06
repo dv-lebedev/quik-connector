@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace QuikConnector.Data
 {
-    public class DataTable<T> : DataChannel where T : new()
+    public class DataTable<T> : DataChannel, QuikConnector.Data.IDataTable<T> where T : new()
     {
         PropertyInfo[] properties;
 

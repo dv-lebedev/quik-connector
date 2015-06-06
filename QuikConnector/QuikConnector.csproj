@@ -54,8 +54,11 @@
     <Compile Include="ConnectorParameters.cs" />
     <Compile Include="Data\DataChannel.cs" />
     <Compile Include="Data\DataTable.cs" />
+    <Compile Include="Data\IDataTable.cs" />
+    <Compile Include="Data\TableAttribute.cs" />
     <Compile Include="Data\XlTable.cs" />
     <Compile Include="Data\QDataServer.cs" />
+    <Compile Include="Exceptions\AttributeNotFoundException.cs" />
     <Compile Include="Orders\ReplyCode.cs" />
     <Compile Include="Orders\ResultCode.cs" />
     <Compile Include="Callbacks\ConnectionStatusEventArgs.cs" />
