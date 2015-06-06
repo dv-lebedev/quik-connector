@@ -55,7 +55,7 @@
     <Compile Include="Data\DataChannel.cs" />
     <Compile Include="Data\DataTable.cs" />
     <Compile Include="Data\IDataTable.cs" />
-    <Compile Include="Data\TableAttribute.cs" />
+    <Compile Include="Data\QuikTableAttribute.cs" />
     <Compile Include="Data\XlTable.cs" />
     <Compile Include="Data\QDataServer.cs" />
     <Compile Include="Exceptions\AttributeNotFoundException.cs" />

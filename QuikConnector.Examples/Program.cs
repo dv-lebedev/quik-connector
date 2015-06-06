@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using QuikConnector.API;
 using QuikConnector.Core;
 using QuikConnector.Data;
@@ -30,7 +31,7 @@ namespace QuikConnector.Examples
 
                 IDataTable<Security> securitiesTable = connector.AddDataTable<Security>();
 
-                securitiesTable.Updated += secuirties_Updated;
+                securitiesTable.Updated += securitiesTable_Updated;
 
                 Console.ReadLine();
 
@@ -46,9 +47,9 @@ namespace QuikConnector.Examples
 
         }
 
-        static void secuirties_Updated(object sender, System.Collections.Generic.List<Security> item)
+        static void securitiesTable_Updated(object sender, List<Security> e)
         {
-            var lkoh = item.Find(i => i.Code == "LKOH");
+            var lkoh = e.Find(i => i.Code == "LKOH");
 
             if (lkoh != null)
             {
@@ -59,7 +60,7 @@ namespace QuikConnector.Examples
 
     }
 
-    [Table(Name="SecuritiesTable")]
+    [QuikTable(Name="SecuritiesTable")]
     public class Security
     {
         public string ShortName { get; set; }

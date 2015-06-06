@@ -56,9 +56,9 @@ namespace QuikConnector.Data
             OnUpdated(this, Rows);
         }
 
-        protected virtual void OnUpdated(object sender, List<T> items)
+        protected virtual void OnUpdated(object sender, List<T> e)
         {
-            if (Updated != null) Updated(sender, items);
+            if (Updated != null) Updated(sender, e);
         }
     }
 }

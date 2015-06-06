@@ -218,10 +218,10 @@ namespace QuikConnector.Core
 
         public DataTable<T> AddDataTable<T>() where T : new()
         {
-            TableAttribute attr = typeof(T).GetTypeInfo().GetCustomAttribute<TableAttribute>();
+            QuikTableAttribute attr = typeof(T).GetTypeInfo().GetCustomAttribute<QuikTableAttribute>();
 
             if (attr == null)
-                throw new AttributeNotFoundException(typeof(TableAttribute));
+                throw new AttributeNotFoundException(typeof(QuikTableAttribute));
 
             DataTable<T> table = new DataTable<T>();
 
@@ -244,10 +244,10 @@ namespace QuikConnector.Core
 
         public bool RemoveDataTable<T>()
         {
-            TableAttribute attr = typeof(T).GetTypeInfo().GetCustomAttribute<TableAttribute>();
+            QuikTableAttribute attr = typeof(T).GetTypeInfo().GetCustomAttribute<QuikTableAttribute>();
 
             if (attr == null)
-                throw new AttributeNotFoundException(typeof(TableAttribute));
+                throw new AttributeNotFoundException(typeof(QuikTableAttribute));
 
             return RemoveDataChannel(attr.Name);
         }
