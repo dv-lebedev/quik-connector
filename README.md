@@ -95,4 +95,4 @@ namespace QuikConnector.Examples
 ```
 
 **Dependencies**
-- NDDE
+- NDde
