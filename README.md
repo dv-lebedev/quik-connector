@@ -92,6 +92,7 @@ namespace QuikConnector.Examples
         public decimal Lot { get; set; }
     }
 }
-
-
 ```
+
+**Dependencies**
+- NDDE
