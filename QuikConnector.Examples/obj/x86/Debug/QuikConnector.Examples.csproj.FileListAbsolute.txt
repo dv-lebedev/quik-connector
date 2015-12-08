@@ -24,3 +24,12 @@ C:\GitHub\QuikConnector\QuikConnector.Examples\bin\x86\Debug\QuikConnector.pdb
 C:\GitHub\QuikConnector\QuikConnector.Examples\obj\x86\Debug\QuikConnector.Examples.csprojResolveAssemblyReference.cache
 C:\GitHub\QuikConnector\QuikConnector.Examples\obj\x86\Debug\QuikConnector.Examples.exe
 C:\GitHub\QuikConnector\QuikConnector.Examples\obj\x86\Debug\QuikConnector.Examples.pdb
+C:\GitHub\quik-connector\QuikConnector.Examples\bin\x86\Debug\QuikConnector.Examples.exe.config
+C:\GitHub\quik-connector\QuikConnector.Examples\obj\x86\Debug\QuikConnector.Examples.exe
+C:\GitHub\quik-connector\QuikConnector.Examples\obj\x86\Debug\QuikConnector.Examples.pdb
+C:\GitHub\quik-connector\QuikConnector.Examples\bin\x86\Debug\QuikConnector.Examples.exe
+C:\GitHub\quik-connector\QuikConnector.Examples\bin\x86\Debug\QuikConnector.Examples.pdb
+C:\GitHub\quik-connector\QuikConnector.Examples\bin\x86\Debug\QuikConnector.dll
+C:\GitHub\quik-connector\QuikConnector.Examples\bin\x86\Debug\NDde.dll
+C:\GitHub\quik-connector\QuikConnector.Examples\bin\x86\Debug\QuikConnector.pdb
+C:\GitHub\quik-connector\QuikConnector.Examples\obj\x86\Debug\QuikConnector.Examples.csprojResolveAssemblyReference.cache
