@@ -5,7 +5,8 @@
 
 ##Functionality
 - send orders and monitor their execution by channel of orders
-- control connection to the terminal
+- get real-time market data
+- control connection to Quik
 - async functions
 
 
