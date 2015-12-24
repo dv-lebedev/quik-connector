@@ -1,7 +1,7 @@
 # QuikConnector
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![.Net version](https://img.shields.io/badge/.NET%20Framework-v4.5-red.svg)
+![.Net version](https://img.shields.io/badge/.NET%20Framework-v4.6-red.svg)
 
 ##Functionality
 - send orders and monitor their execution by channel of orders
@@ -59,7 +59,7 @@ namespace QuikConnector.Examples
 
         }
 
-        static void securitiesTable_Updated(object sender, System.Collections.Generic.List<Security> item)
+        static void securitiesTable_Updated(object sender, List<Security> item)
         {
             var lkoh = item.Find(i => i.Code == "LKOH");
 
@@ -76,23 +76,14 @@ namespace QuikConnector.Examples
     public class Security
     {
         public string ShortName { get; set; }
-
         public string Code { get; set; }
-
         public string Class { get; set; }
-
         public string Status { get; set; }
-
         public decimal Bid { get; set; }
-
         public decimal BidVolume { get; set; }
-
         public decimal Ask { get; set; }
-
         public decimal AskVolume { get; set; }
-
         public decimal Price { get; set; }
-
         public decimal Lot { get; set; }
     }
 }
