@@ -84,57 +84,57 @@ namespace QuikConnector.Core
 
         protected virtual void OnConnected(object sender, EventArgs e)
         {
-            if (Connected != null) Connected(sender, e);
+            Connected?.Invoke(sender, e);
         }
 
         protected virtual void OnDisconnected(object sender, EventArgs e)
         {
-            if (Disconnected != null) Disconnected(sender, e);
+            Disconnected?.Invoke(sender, e);
         }
 
         protected virtual void OnImportStarted(object sender, EventArgs e)
         {
-            if (ImportStarted != null) ImportStarted(sender, e);
+            ImportStarted?.Invoke(sender, e);
         }
 
         protected virtual void OnImportStopped(object sender, EventArgs e)
         {
-            if (ImportStopped != null) ImportStopped(sender, e);
+            ImportStopped?.Invoke(sender, e);
         }
 
         protected virtual void OnOrderChannelAdded(object sender, OrderChannel e)
         {
-            if (OrderChannelAdded != null) OrderChannelAdded(sender, e);
+            OrderChannelAdded?.Invoke(sender, e);
         }
 
         protected virtual void OnOrderChannelRemoved(object sender, OrderChannel e)
         {
-            if (OrderChannelRemoved != null) OrderChannelRemoved(sender, e);
+            OrderChannelRemoved?.Invoke(sender, e);
         }
 
         protected virtual void OnOrderChannelCreated(object sender, OrderChannel e)
         {
-            if (OrderChannelCreated != null) OrderChannelCreated(sender, e);
+            OrderChannelCreated?.Invoke(sender, e);
         }
 
         protected virtual void OnDataChannelAdded(object sender, DataChannel e)
         {
-            if (DataChannelAdded != null) DataChannelAdded(sender, e);
+            DataChannelAdded?.Invoke(sender, e);
         }
 
         protected virtual void OnDataChannelRemoved(object sender, EventArgs e)
         {
-            if (DataChannelRemoved != null) DataChannelRemoved(sender, e);
+            DataChannelRemoved?.Invoke(sender, e);
         }
 
         protected virtual void OnConnectionStatusChanged(object sender, ConnectionStatusEventArgs e)
         {
-            if (ConnectionStatusChanged != null) ConnectionStatusChanged(sender, e);
+            ConnectionStatusChanged?.Invoke(sender, e);
         }
 
         protected virtual void OnDisposed(object sender, EventArgs e)
         {
-            if (Disposed != null) Disposed(this, e);
+            Disposed?.Invoke(sender, e);
         }
 
 
