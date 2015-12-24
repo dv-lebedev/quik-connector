@@ -82,60 +82,17 @@ namespace QuikConnector.Core
         public event EventHandler Disposed;
 
 
-        protected virtual void OnConnected(object sender, EventArgs e)
-        {
-            Connected?.Invoke(sender, e);
-        }
-
-        protected virtual void OnDisconnected(object sender, EventArgs e)
-        {
-            Disconnected?.Invoke(sender, e);
-        }
-
-        protected virtual void OnImportStarted(object sender, EventArgs e)
-        {
-            ImportStarted?.Invoke(sender, e);
-        }
-
-        protected virtual void OnImportStopped(object sender, EventArgs e)
-        {
-            ImportStopped?.Invoke(sender, e);
-        }
-
-        protected virtual void OnOrderChannelAdded(object sender, OrderChannel e)
-        {
-            OrderChannelAdded?.Invoke(sender, e);
-        }
-
-        protected virtual void OnOrderChannelRemoved(object sender, OrderChannel e)
-        {
-            OrderChannelRemoved?.Invoke(sender, e);
-        }
-
-        protected virtual void OnOrderChannelCreated(object sender, OrderChannel e)
-        {
-            OrderChannelCreated?.Invoke(sender, e);
-        }
-
-        protected virtual void OnDataChannelAdded(object sender, DataChannel e)
-        {
-            DataChannelAdded?.Invoke(sender, e);
-        }
-
-        protected virtual void OnDataChannelRemoved(object sender, EventArgs e)
-        {
-            DataChannelRemoved?.Invoke(sender, e);
-        }
-
-        protected virtual void OnConnectionStatusChanged(object sender, ConnectionStatusEventArgs e)
-        {
-            ConnectionStatusChanged?.Invoke(sender, e);
-        }
-
-        protected virtual void OnDisposed(object sender, EventArgs e)
-        {
-            Disposed?.Invoke(sender, e);
-        }
+        protected virtual void OnConnected(object sender, EventArgs e) => Connected?.Invoke(sender, e);
+        protected virtual void OnDisconnected(object sender, EventArgs e) => Disconnected?.Invoke(sender, e);
+        protected virtual void OnImportStarted(object sender, EventArgs e) => ImportStarted?.Invoke(sender, e);
+        protected virtual void OnImportStopped(object sender, EventArgs e) => ImportStopped?.Invoke(sender, e);
+        protected virtual void OnOrderChannelAdded(object sender, OrderChannel e) => OrderChannelAdded?.Invoke(sender, e);
+        protected virtual void OnOrderChannelRemoved(object sender, OrderChannel e) => OrderChannelRemoved?.Invoke(sender, e);
+        protected virtual void OnOrderChannelCreated(object sender, OrderChannel e) => OrderChannelCreated?.Invoke(sender, e);
+        protected virtual void OnDataChannelAdded(object sender, DataChannel e) => DataChannelAdded?.Invoke(sender, e);
+        protected virtual void OnDataChannelRemoved(object sender, EventArgs e)  => DataChannelRemoved?.Invoke(sender, e);
+        protected virtual void OnConnectionStatusChanged(object sender, ConnectionStatusEventArgs e) => ConnectionStatusChanged?.Invoke(sender, e);
+        protected virtual void OnDisposed(object sender, EventArgs e) => Disposed?.Invoke(sender, e);
 
 
         #endregion
@@ -155,7 +112,7 @@ namespace QuikConnector.Core
                 return server.Channels;
             }
         }
- 
+
         public QConnector(ConnectorParameters parameters)
         {
             connection = new QuikConnection(parameters.Path)
@@ -171,7 +128,7 @@ namespace QuikConnector.Core
 
         public bool Connect()
         {
-            if(connection.Connect())
+            if (connection.Connect())
             {
                 OnConnected(this, null);
 
@@ -264,7 +221,7 @@ namespace QuikConnector.Core
         public void RemoveOrderChannel(string secCode)
         {
             connection.Unsubscribe(i => i.SecCode == secCode);
-          
+
             OnOrderChannelRemoved(this, null);
         }
 
@@ -284,7 +241,7 @@ namespace QuikConnector.Core
         {
             var channel = connection.CreateOrderChannel(secCode, classCode);
 
-            if(channel != null)
+            if (channel != null)
             {
                 OrderChannelCreated(this, channel);
             }
