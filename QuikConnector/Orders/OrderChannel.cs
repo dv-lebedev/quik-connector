@@ -37,7 +37,6 @@ namespace QuikConnector
         public static long TransId { get; private set; }
 
         public string Account { get; private set; }
-        public string ClientCode { get; set; }
 
         public string SecCode { get; set; }
         public string ClassCode { get; set; }
@@ -57,12 +56,10 @@ namespace QuikConnector
             Trades = new SortedDictionary<double, TradeCallbackEventArgs>();
         }
 
-        public OrderChannel(string account, string clientCode,
-            string secCode, string classCode)
+        public OrderChannel(string account, string secCode, string classCode)
             : this()
         {
             Account = account;
-            ClientCode = clientCode;
             SecCode = secCode;
             ClassCode = classCode;
         }
@@ -97,7 +94,7 @@ namespace QuikConnector
         }
 
 
-        public OrderResult SendTransaction(Direction direction, decimal price, int volume, string clientcode)
+        public OrderResult SendTransaction(Direction direction, decimal price, int volume, string clientcode = "")
         {
             TransId++;
 
@@ -118,7 +115,7 @@ namespace QuikConnector
             };
         }
 
-        public OrderResult SendTransaction(Direction direction, int volume, string clientcode)
+        public OrderResult SendTransaction(Direction direction, int volume, string clientcode = "")
         {
             TransId++;
 
@@ -140,19 +137,7 @@ namespace QuikConnector
         }
 
 
-        public OrderResult SendTransaction(Direction direction, int volume)
-        {
-            return SendTransaction(direction, volume, ClientCode);
-        }
-
-
-        public OrderResult SendTransaction(Direction direction, decimal price, int volume)
-        {
-            return SendTransaction(direction, price, volume, ClientCode);
-        }
-
-
-        public async Task<OrderResult> SendTransactionAsync(Direction direction, decimal price, int volume, string clientcode)
+        public async Task<OrderResult> SendTransactionAsync(Direction direction, decimal price, int volume, string clientcode = "")
         {
             return await Task<OrderResult>.Factory.StartNew(() =>
                 {
@@ -160,51 +145,23 @@ namespace QuikConnector
                 });
         }
 
-        public async Task<OrderResult> SendTransactionAsync(Direction direction, decimal price, int volume)
-        {
-            return await Task<OrderResult>.Factory.StartNew(() =>
-            {
-                return SendTransaction(direction, price, volume);
-            });
-        }
 
-
-        public OrderResult Buy(decimal price, int volume)
-        {
-            return SendTransaction(Direction.Buy, price, volume);
-        }
-
-        public OrderResult Buy(decimal price, int volume, string clientcode)
+        public OrderResult Buy(decimal price, int volume, string clientcode = "")
         {
             return SendTransaction(Direction.Buy, price, volume, clientcode);
         }
 
-        public OrderResult Buy(int volume, string clientcode)
+        public OrderResult Buy(int volume, string clientcode = "")
         {
             return SendTransaction(Direction.Buy, volume, clientcode);
         }
 
-        public OrderResult Buy(int volume)
-        {
-            return SendTransaction(Direction.Buy, volume);
-        }
-
-        public OrderResult Sell(decimal price, int volume)
-        {
-            return SendTransaction(Direction.Sell, price, volume);
-        }
-
-        public OrderResult Sell(decimal price, int volume, string clientcode)
+        public OrderResult Sell(decimal price, int volume, string clientcode = "")
         {
             return SendTransaction(Direction.Sell, price, volume, clientcode);
         }
 
-        public OrderResult Sell(int volume)
-        {
-            return SendTransaction(Direction.Sell, volume);
-        }
-
-        public OrderResult Sell(int volume, string clientcode)
+        public OrderResult Sell(int volume, string clientcode = "")
         {
             return SendTransaction(Direction.Sell, volume, clientcode);
         }

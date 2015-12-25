@@ -45,8 +45,6 @@ namespace QuikConnector
 
         public string Account { get; set; }
 
-        public string ClientCode { get; set; }
-
         public bool IsQuikConnected
         {
             get 
@@ -116,7 +114,7 @@ namespace QuikConnector
 
         public OrderChannel CreateOrderChannel(string secCode, string classCode)
         {
-            var channel = new OrderChannel(Account, ClientCode, secCode, classCode);
+            var channel = new OrderChannel(Account, secCode, classCode);
 
             Subscribe(channel);
 

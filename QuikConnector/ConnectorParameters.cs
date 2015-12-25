@@ -27,8 +27,7 @@ namespace QuikConnector.Core
     public class ConnectorParameters
     {
         public string Account { get; set; }
-        public string ClientCode { get; set; }
-        public string Path { get; set; }
+        public string PathToQuik { get; set; }
         public string ServerName { get; set; }
     }
 }

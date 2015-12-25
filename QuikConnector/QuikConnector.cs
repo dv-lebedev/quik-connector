@@ -46,19 +46,6 @@ namespace QuikConnector.Core
             }
         }
 
-        public string ClientCode
-        {
-            get
-            {
-                return connection.ClientCode;
-            }
-
-            set
-            {
-                connection.ClientCode = value;
-            }
-        }
-
         private QuikConnection connection;
 
         private QDataServer server;
@@ -115,10 +102,9 @@ namespace QuikConnector.Core
 
         public QConnector(ConnectorParameters parameters)
         {
-            connection = new QuikConnection(parameters.Path)
+            connection = new QuikConnection(parameters.PathToQuik)
             {
-                Account = parameters.Account,
-                ClientCode = parameters.ClientCode
+                Account = parameters.Account
             };
 
 
