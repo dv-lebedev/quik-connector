@@ -26,8 +26,7 @@ namespace QuikConnector.Examples
             var parameters = new ConnectorParameters
             {
                 Account = "MyAccount",
-                ClientCode = "ClientCode",
-                Path = Terminal.GetPathToActiveQuik(),
+                PathToQuik = Terminal.GetPathToActiveQuik(),
                 ServerName = "QServer"
             };
 

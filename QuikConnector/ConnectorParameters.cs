@@ -26,8 +26,15 @@ namespace QuikConnector.Core
 {
     public class ConnectorParameters
     {
-        public string Account { get; set; }
-        public string PathToQuik { get; set; }
-        public string ServerName { get; set; }
+        public string Account { get; }
+        public string PathToQuik { get; }
+        public string ServerName { get; }
+
+        public ConnectorParameters(string account, string pathToQuik, string ddeServerName)
+        {
+            Account = account;
+            PathToQuik = pathToQuik;
+            ServerName = ddeServerName;
+        }
     }
 }
