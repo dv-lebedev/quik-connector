@@ -23,12 +23,10 @@ namespace QuikConnector.Examples
     {
         static void Main(string[] args)
         {
-            var parameters = new ConnectorParameters
-            {
-                Account = "MyAccount",
-                PathToQuik = Terminal.GetPathToActiveQuik(),
-                ServerName = "QServer"
-            };
+            var parameters = new ConnectorParameters(
+                account: "MyAccount",
+                pathToQuik: Terminal.GetPathToActiveQuik(),
+                ddeServerName: "QServer");
 
             using (QConnector connector = new QConnector(parameters))
             {
