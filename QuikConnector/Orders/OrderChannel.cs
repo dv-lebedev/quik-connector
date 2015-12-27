@@ -64,7 +64,6 @@ namespace QuikConnector
             ClassCode = classCode;
         }
 
-
         public void OnOrderCallback(OrderCallbackEventArgs e)
         {
             if (Orders.ContainsKey(e.Number))
@@ -76,7 +75,7 @@ namespace QuikConnector
                 Orders.Add(e.Number, e);
             }
 
-            if (OrderCallback != null) OrderCallback(this, e);
+            OrderCallback?.Invoke(this, e);
         }
 
         public void OnTradeCallback(TradeCallbackEventArgs e)
@@ -90,9 +89,8 @@ namespace QuikConnector
                 Trades.Add(e.Number, e);
             }
 
-            if (TradeCallback != null) TradeCallback(this, e);
+            TradeCallback?.Invoke(this, e);
         }
-
 
         public OrderResult SendTransaction(Direction direction, decimal price, int volume, string clientcode = "")
         {
@@ -136,7 +134,6 @@ namespace QuikConnector
             };
         }
 
-
         public async Task<OrderResult> SendTransactionAsync(Direction direction, decimal price, int volume, string clientcode = "")
         {
             return await Task<OrderResult>.Factory.StartNew(() =>
@@ -144,7 +141,6 @@ namespace QuikConnector
                     return SendTransaction(direction, price, volume, clientcode);
                 });
         }
-
 
         public OrderResult Buy(decimal price, int volume, string clientcode = "")
         {
@@ -166,12 +162,6 @@ namespace QuikConnector
             return SendTransaction(Direction.Sell, volume, clientcode);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="transId"></param>
-        /// <param name="orderNum"></param>
-        /// <returns>ReplyCode</returns>
         public OrderResult KillOrder(long transId, double orderNum)
         {
             string kill = string.Format(CultureInfo.InvariantCulture, "CLASSCODE={0}; SECCODE={1}; TRANS_ID={2}; ACTION=KILL_ORDER; ORDER_KEY={3};",

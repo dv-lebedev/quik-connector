@@ -45,30 +45,12 @@ namespace QuikConnector
 
         public string Account { get; set; }
 
-        public bool IsQuikConnected
-        {
-            get 
-            { 
-                return QuikApi.IsQuikConnected(); 
-            }
-        }
+        public bool IsQuikConnected => QuikApi.IsQuikConnected(); 
 
-        public bool IsDllConnected
-        {
-            get 
-            {
-                return QuikApi.IsDLLConnected();
-            }
-        }
+        public bool IsDllConnected => QuikApi.IsDLLConnected();
 
-        public bool IsConnected
-        {
-            get
-            {
-                return QuikApi.IsQuikConnected() && QuikApi.IsDLLConnected();
-            }
-        }
-
+        public bool IsConnected => QuikApi.IsQuikConnected() && QuikApi.IsDLLConnected();
+ 
         protected QuikConnection()
         {
             Channels = new List<OrderChannel>();
@@ -78,10 +60,11 @@ namespace QuikConnector
             QuikApi.ConnectionStatusCallback += OnStatusCallback;
         }
 
-        public QuikConnection(string path)
+        public QuikConnection(string path, string account)
             : this()
         {
             PathToQuik = new Uri(path).LocalPath;
+            Account = account;
         }
 
 
@@ -176,23 +159,22 @@ namespace QuikConnector
 
         protected void OnStatusCallback(object sender, ConnectionStatusEventArgs cscp)
         {
-            if (ConnectionStatusChanged != null) ConnectionStatusChanged(sender, cscp);
+            ConnectionStatusChanged?.Invoke(sender, cscp);
         }
 
         protected void OnConnected(object sender, EventArgs e)
         {
-            if (Connected != null) Connected(sender, e);
+            Connected?.Invoke(sender, e);
         }
 
         protected void OnDisconnected(object sender, EventArgs e)
         {
-            if (Disconnected != null) Disconnected(sender, e);
+            Disconnected?.Invoke(sender, e);
         }
-
 
         protected void OnDisposed(object sender, EventArgs e)
         {
-            if (Disposed != null) Disposed(sender, e);
+            Disposed?.Invoke(sender, e);
         }
     }
 }

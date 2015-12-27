@@ -18,3 +18,4 @@ C:\GitHub\quik-connector\QuikConnector\bin\x86\Debug\QuikConnector.dll
 C:\GitHub\quik-connector\QuikConnector\bin\x86\Debug\QuikConnector.pdb
 C:\GitHub\quik-connector\QuikConnector\obj\x86\Debug\QuikConnector.dll
 C:\GitHub\quik-connector\QuikConnector\obj\x86\Debug\QuikConnector.pdb
+C:\GitHub\quik-connector\QuikConnector\obj\x86\Debug\QuikConnector.csprojResolveAssemblyReference.cache

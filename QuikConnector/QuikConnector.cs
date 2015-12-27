@@ -39,7 +39,6 @@ namespace QuikConnector.Core
             {
                 return connection.Account;
             }
-
             set
             {
                 connection.Account = value;
@@ -84,32 +83,15 @@ namespace QuikConnector.Core
 
         #endregion
 
-        public List<OrderChannel> OrderChannels
-        {
-            get
-            {
-                return connection.Channels;
-            }
-        }
+        public List<OrderChannel> OrderChannels => connection.Channels;
 
-        public Dictionary<string, DataChannel> DataChannels
-        {
-            get
-            {
-                return server.Channels;
-            }
-        }
+        public Dictionary<string, DataChannel> DataChannels => server.Channels;
+
 
         public QConnector(ConnectorParameters parameters)
         {
-            connection = new QuikConnection(parameters.PathToQuik)
-            {
-                Account = parameters.Account
-            };
-
-
+            connection = new QuikConnection(parameters.PathToQuik, parameters.Account);
             server = new QDataServer(parameters.ServerName);
-
         }
 
         public bool Connect()
