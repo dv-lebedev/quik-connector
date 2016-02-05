@@ -26,8 +26,18 @@ namespace QuikConnector.Orders
 {
     public class OrderResult
     {
-        public double OrderNumber { get; set; }
-        public ReplyCode ReplyCode { get; set; }
-        public ResultCode ResultCode { get; set; }
+        public long TransId { get; private set; }
+        public double OrderNumber { get; private set; }
+        public ReplyCode ReplyCode { get; private set; }
+        public ResultCode ResultCode { get; private set; }
+
+        public OrderResult(long transId, double orderNumber, 
+            ReplyCode replyCode, ResultCode resultCode)
+        {
+            TransId = transId;
+            OrderNumber = orderNumber;
+            ReplyCode = replyCode;
+            ResultCode = resultCode;
+        }
     }
 }

@@ -105,12 +105,7 @@ namespace QuikConnector
 
             long result = QuikApi.send_sync_transaction_test(transactionString, ref orderNum, ref replyCode);
 
-            return new OrderResult
-            {
-                OrderNumber = orderNum,
-                ReplyCode = (ReplyCode)replyCode,
-                ResultCode = (ResultCode)result
-            };
+            return new OrderResult(TransId, orderNum, (ReplyCode)replyCode, (ResultCode)result);
         }
 
         public OrderResult SendTransaction(Direction direction, int volume, string clientcode = "")
@@ -126,12 +121,7 @@ namespace QuikConnector
 
             long result = QuikApi.send_sync_transaction_test(transactionString, ref orderNum, ref replyCode);
 
-            return new OrderResult
-            {
-                OrderNumber = orderNum,
-                ReplyCode = (ReplyCode)replyCode,
-                ResultCode = (ResultCode)result
-            };
+            return new OrderResult(TransId, orderNum, (ReplyCode)replyCode, (ResultCode)result);
         }
 
         public async Task<OrderResult> SendTransactionAsync(Direction direction, decimal price, int volume, string clientcode = "")
@@ -174,12 +164,7 @@ namespace QuikConnector
 
             ResultCode result = (ResultCode)QuikApi.send_sync_transaction_test(kill, ref orderNum, ref replyCode);
 
-            return new OrderResult
-            {
-                OrderNumber = orderNum,
-                ResultCode = result,
-                ReplyCode = (ReplyCode)replyCode
-            };
+            return new OrderResult(transId, orderNum, (ReplyCode)replyCode, result);
         }
     }
 }

@@ -62,7 +62,7 @@ namespace QuikConnector.Examples
 
                 OrderResult result = lkoh.SendTransaction(Direction.Buy, 3000, 1);
                 
-                lkoh.KillOrder(OrderChannel.TransId, result.OrderNumber);
+                lkoh.KillOrder(result.TransId, result.OrderNumber);
 
                 Console.ReadLine();
             }
