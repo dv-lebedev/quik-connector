@@ -60,7 +60,7 @@ namespace QuikConnector.Examples
 
                 OrderChannel lkoh = connector.CreateOrderChannel("LKOH", "EQBR");
 
-                OrderResult result = lkoh.SendTransaction(Direction.Buy, 3000, 1);
+                OrderResult result = lkoh.SendTransaction(Direction.Buy, price: 3000.00M, volume: 1);
                 
                 lkoh.KillOrder(result.TransId, result.OrderNumber);
 
