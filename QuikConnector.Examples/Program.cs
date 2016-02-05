@@ -61,7 +61,7 @@ namespace QuikConnector.Examples
                 OrderChannel lkoh = connector.CreateOrderChannel("LKOH", "EQBR");
 
                 OrderResult result = lkoh.SendTransaction(Direction.Buy, 3000, 1);
-
+                
                 lkoh.KillOrder(OrderChannel.TransId, result.OrderNumber);
 
                 Console.ReadLine();
@@ -86,23 +86,14 @@ namespace QuikConnector.Examples
     public class Security
     {
         public string ShortName { get; set; }
-
         public string Code { get; set; }
-
         public string Class { get; set; }
-
         public string Status { get; set; }
-
         public decimal Bid { get; set; }
-
         public decimal BidVolume { get; set; }
-
         public decimal Ask { get; set; }
-
         public decimal AskVolume { get; set; }
-
         public decimal Price { get; set; }
-
         public decimal Lot { get; set; }
     }
 }

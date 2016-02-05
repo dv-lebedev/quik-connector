@@ -79,7 +79,7 @@ namespace QuikConnector.Data
 
         protected virtual void OnUpdated(object sender, List<T> e)
         {
-            if (Updated != null) Updated(sender, e);
+            Updated?.Invoke(sender, e);
         }
     }
 }

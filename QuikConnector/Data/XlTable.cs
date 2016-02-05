@@ -162,7 +162,6 @@ namespace QuikConnector.Data
         public void Dispose()
         {
             if (br != null) br.Dispose();
-
             if (ms != null) ms.Dispose();
         }
     }

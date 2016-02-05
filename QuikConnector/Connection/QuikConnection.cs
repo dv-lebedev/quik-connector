@@ -131,7 +131,7 @@ namespace QuikConnector
 
         public void Dispose()
         {
-            if (IsConnected) this.Disconnect();
+            if (IsConnected) Disconnect();
 
             QuikApi.OrderCallback -= OnOrderCallback;
             QuikApi.TradeCallBack -= OnTradeCallback;

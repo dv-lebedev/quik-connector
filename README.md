@@ -12,6 +12,7 @@
 
 ```c#
 using System;
+using System.Collections.Generic;
 using QuikConnector.API;
 using QuikConnector.Core;
 using QuikConnector.Data;
@@ -27,6 +28,7 @@ namespace QuikConnector.Examples
                 account: "MyAccount",
                 pathToQuik: Terminal.GetPathToActiveQuik(),
                 ddeServerName: "QServer");
+
 
             using (QConnector connector = new QConnector(parameters))
             {
@@ -48,7 +50,7 @@ namespace QuikConnector.Examples
                 OrderChannel lkoh = connector.CreateOrderChannel("LKOH", "EQBR");
 
                 OrderResult result = lkoh.SendTransaction(Direction.Buy, 3000, 1);
-
+                
                 lkoh.KillOrder(OrderChannel.TransId, result.OrderNumber);
 
                 Console.ReadLine();
@@ -56,9 +58,9 @@ namespace QuikConnector.Examples
 
         }
 
-        static void securitiesTable_Updated(object sender, List<Security> item)
+        static void securitiesTable_Updated(object sender, List<Security> e)
         {
-            var lkoh = item.Find(i => i.Code == "LKOH");
+            var lkoh = e.Find(i => i.Code == "LKOH");
 
             if (lkoh != null)
             {
@@ -84,6 +86,7 @@ namespace QuikConnector.Examples
         public decimal Lot { get; set; }
     }
 }
+
 ```
 
 ##Dependencies

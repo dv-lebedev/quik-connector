@@ -164,6 +164,9 @@ namespace QuikConnector
 
         public OrderResult KillOrder(long transId, double orderNum)
         {
+            if (!Orders.ContainsKey(orderNum))
+                throw new ArgumentException(string.Format("Order for {0} with orderNum = {1} is NOT FOUND."));
+
             string kill = string.Format(CultureInfo.InvariantCulture, "CLASSCODE={0}; SECCODE={1}; TRANS_ID={2}; ACTION=KILL_ORDER; ORDER_KEY={3};",
                  ClassCode, SecCode, transId, orderNum);
 
