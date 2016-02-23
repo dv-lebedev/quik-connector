@@ -3,6 +3,8 @@
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![.Net version](https://img.shields.io/badge/.NET%20Framework-v4.6-red.svg)
 
+Quik settings in 'info.wnd'
+
 ##Functionality
 - send orders and monitor their execution by channel of orders
 - get real-time market data
