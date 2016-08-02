@@ -44,11 +44,8 @@ namespace QuikConnector
         public SortedDictionary<double, OrderCallbackEventArgs> Orders { get; protected set; }
         public SortedDictionary<double, TradeCallbackEventArgs> Trades { get; protected set; }
 
-
         public event EventHandler<OrderCallbackEventArgs> OrderCallback;
-
         public event EventHandler<TradeCallbackEventArgs> TradeCallback;
-
 
         protected OrderChannel()
         {
@@ -124,34 +121,20 @@ namespace QuikConnector
             return new OrderResult(TransId, orderNum, (ReplyCode)replyCode, (ResultCode)result);
         }
 
-        public async Task<OrderResult> SendTransactionAsync(Direction direction, decimal price, int volume, string clientcode = "")
+        public Task<OrderResult> SendTransactionAsync(Direction direction, decimal price, int volume, string clientcode = "")
         {
-            return await Task<OrderResult>.Factory.StartNew(() =>
+            return Task<OrderResult>.Factory.StartNew(() =>
                 {
                     return SendTransaction(direction, price, volume, clientcode);
                 });
         }
 
-        public OrderResult Buy(decimal price, int volume, string clientcode = "")
-        {
-            return SendTransaction(Direction.Buy, price, volume, clientcode);
-        }
-
-        public OrderResult Buy(int volume, string clientcode = "")
-        {
-            return SendTransaction(Direction.Buy, volume, clientcode);
-        }
-
-        public OrderResult Sell(decimal price, int volume, string clientcode = "")
-        {
-            return SendTransaction(Direction.Sell, price, volume, clientcode);
-        }
-
-        public OrderResult Sell(int volume, string clientcode = "")
-        {
-            return SendTransaction(Direction.Sell, volume, clientcode);
-        }
-
+        public OrderResult Buy(decimal price, int volume, string clientcode = "") => SendTransaction(Direction.Buy, price, volume, clientcode);
+        public OrderResult Buy(int volume, string clientcode = "") => SendTransaction(Direction.Buy, volume, clientcode);
+        
+        public OrderResult Sell(decimal price, int volume, string clientcode = "") => SendTransaction(Direction.Sell, price, volume, clientcode);
+        public OrderResult Sell(int volume, string clientcode = "") => SendTransaction(Direction.Sell, volume, clientcode);
+        
         public OrderResult KillOrder(long transId, double orderNum)
         {
             if (!Orders.ContainsKey(orderNum))

@@ -105,28 +105,13 @@ namespace QuikConnector
         }
 
 
-        public void Subscribe(OrderChannel channel)
-        {
-            Channels.Add(channel);
-        }
+        public void Subscribe(OrderChannel channel) => Channels.Add(channel);
 
-
-        public bool Unsubscribe(OrderChannel channel)
-        {
-            return Channels.Remove(channel);
-        }
-
-
-        public int Unsubscribe(Predicate<OrderChannel> channels)
-        {
-            return Channels.RemoveAll(channels);
-        }
-
-
-        public void UnsubscribeAllOrders()
-        {
-            Channels.Clear();
-        }
+        public bool Unsubscribe(OrderChannel channel) => Channels.Remove(channel);
+        
+        public int Unsubscribe(Predicate<OrderChannel> channels) => Channels.RemoveAll(channels);
+        
+        public void UnsubscribeAllOrders() => Channels.Clear();
 
 
         public void Dispose()
@@ -162,19 +147,11 @@ namespace QuikConnector
             ConnectionStatusChanged?.Invoke(sender, cscp);
         }
 
-        protected void OnConnected(object sender, EventArgs e)
-        {
-            Connected?.Invoke(sender, e);
-        }
+        protected void OnConnected(object sender, EventArgs e) => Connected?.Invoke(sender, e);
+    
+        protected void OnDisconnected(object sender, EventArgs e) => Disconnected?.Invoke(sender, e);
 
-        protected void OnDisconnected(object sender, EventArgs e)
-        {
-            Disconnected?.Invoke(sender, e);
-        }
-
-        protected void OnDisposed(object sender, EventArgs e)
-        {
-            Disposed?.Invoke(sender, e);
-        }
+        protected void OnDisposed(object sender, EventArgs e) => Disposed?.Invoke(sender, e);
+        
     }
 }
