@@ -28,19 +28,13 @@ namespace QuikConnector.Exceptions
 {
     public class AttributeNotFoundException : Exception
     {
-        private Type attributeType;
+        private Type _attributeType;
 
-        public override string Message
-        {
-            get
-            {
-                return attributeType.Name + " is not implemented";
-            }
-        }
+        public override string Message => _attributeType.Name + " is not implemented";
 
         public AttributeNotFoundException(Type attributeType)
         {
-            this.attributeType = attributeType;
+            _attributeType = attributeType;
         }
     }
 }

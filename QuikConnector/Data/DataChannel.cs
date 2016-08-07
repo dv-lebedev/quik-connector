@@ -28,7 +28,7 @@ namespace QuikConnector.Data
 {
     public abstract class DataChannel
     {
-        internal virtual bool IsConnected { get; set; }
+        public virtual bool IsConnected { get; set; }
         protected DateTime DataReceived { get; set; }
 
         internal bool IsError { get; set; }

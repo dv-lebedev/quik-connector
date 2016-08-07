@@ -28,9 +28,9 @@ using System.Reflection;
 
 namespace QuikConnector.Data
 {
-    public class DataTable<T> : DataChannel, QuikConnector.Data.IDataTable<T> where T : new()
+    public class DataTable<T> : DataChannel, IDataTable<T> where T : new()
     {
-        PropertyInfo[] properties;
+        private PropertyInfo[] _properties;
 
         public List<T> Rows { get; protected set; }
 
@@ -38,7 +38,7 @@ namespace QuikConnector.Data
 
         public DataTable()
         {
-            properties = typeof(T).GetProperties();
+            _properties = typeof(T).GetProperties();
 
             Rows = new List<T>();
         }
@@ -58,12 +58,12 @@ namespace QuikConnector.Data
                     switch (xt.ValueType)
                     {
                         case XlTable.BlockType.Float:
-                            properties[col].SetValue(item, (decimal)xt.FloatValue);
+                            _properties[col].SetValue(item, (decimal)xt.FloatValue);
                             break;
 
                         case XlTable.BlockType.String:
                             if (xt.StringValue != string.Empty)
-                                properties[col].SetValue(item, xt.StringValue);
+                                _properties[col].SetValue(item, xt.StringValue);
                             break;
 
                         default:

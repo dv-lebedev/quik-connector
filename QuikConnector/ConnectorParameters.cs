@@ -22,6 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
 
+using System;
+
 namespace QuikConnector.Core
 {
     public class ConnectorParameters
@@ -32,6 +34,10 @@ namespace QuikConnector.Core
 
         public ConnectorParameters(string account, string pathToQuik, string ddeServerName)
         {
+            if (account == null) throw new ArgumentNullException("account");
+            if (pathToQuik == null) throw new ArgumentNullException("pathToQuik");
+            if (ddeServerName == null) throw new ArgumentNullException("ddeServerName");
+
             Account = account;
             PathToQuik = pathToQuik;
             ServerName = ddeServerName;

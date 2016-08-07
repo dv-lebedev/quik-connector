@@ -729,9 +729,9 @@ namespace QuikConnector
             GCHandle gcConn = GCHandle.Alloc(conn_cb);
             GCHandle gcTrans = GCHandle.Alloc(trans_callback);
 
-            Byte[] EMsg = new Byte[50];
-            UInt32 EMsgSz = 50, uExtEC = 0;
-            Int32 ExtEC = 0;
+            byte[] EMsg = new byte[50];
+            uint EMsgSz = 50, uExtEC = 0;
+            int ExtEC = 0;
 
             set_connection_status_callback(conn_cb, uExtEC, EMsg, EMsgSz);
             set_transaction_reply_callback(trans_callback, ref ExtEC, EMsg, EMsgSz);

@@ -47,7 +47,7 @@ namespace QuikConnector.Examples
 
                 connector.ImportStarted += (sender, e) => { Console.WriteLine("Import started."); };
 
-                connector.Connect();
+                connector.TryConnect();
                 connector.StartImport();
 
 

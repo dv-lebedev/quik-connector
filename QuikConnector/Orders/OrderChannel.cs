@@ -26,7 +26,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
-
 using QuikConnector.Orders;
 
 namespace QuikConnector
@@ -37,9 +36,8 @@ namespace QuikConnector
         public static long TransId { get; private set; }
 
         public string Account { get; private set; }
-
-        public string SecCode { get; set; }
-        public string ClassCode { get; set; }
+        public string SecCode { get; private set; }
+        public string ClassCode { get; private set; }
 
         public SortedDictionary<double, OrderCallbackEventArgs> Orders { get; protected set; }
         public SortedDictionary<double, TradeCallbackEventArgs> Trades { get; protected set; }
@@ -56,6 +54,10 @@ namespace QuikConnector
         public OrderChannel(string account, string secCode, string classCode)
             : this()
         {
+            if (account == null) throw new ArgumentNullException("account");
+            if (secCode == null) throw new ArgumentNullException("secCode");
+            if (classCode == null) throw new ArgumentNullException("classCode");
+
             Account = account;
             SecCode = secCode;
             ClassCode = classCode;

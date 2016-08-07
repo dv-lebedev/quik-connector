@@ -31,24 +31,18 @@ namespace QuikConnector
     [Serializable]
     public class QuikConnection : IDisposable
     {
-        public string PathToQuik { get; set; }
+        public string PathToQuik { get; }
+        public string Account { get; }
 
         public List<OrderChannel> Channels { get; protected set; }
 
+        public event EventHandler Connected;
+        public event EventHandler Disconnected;
+        public event EventHandler Disposed;
         public event EventHandler<ConnectionStatusEventArgs> ConnectionStatusChanged;
 
-        public event EventHandler Connected;
-
-        public event EventHandler Disconnected;
-
-        public event EventHandler Disposed;
-
-        public string Account { get; set; }
-
         public bool IsQuikConnected => QuikApi.IsQuikConnected(); 
-
         public bool IsDllConnected => QuikApi.IsDLLConnected();
-
         public bool IsConnected => QuikApi.IsQuikConnected() && QuikApi.IsDLLConnected();
  
         protected QuikConnection()
@@ -63,18 +57,24 @@ namespace QuikConnector
         public QuikConnection(string path, string account)
             : this()
         {
+            if (path == null) throw new ArgumentNullException("path");
+            if (account == null) throw new ArgumentNullException("account");
+
             PathToQuik = new Uri(path).LocalPath;
             Account = account;
         }
 
 
-        public bool Connect()
+        public bool TryConnect()
         {
+            if (IsConnected)
+                throw new Exception("It has been connected already.");
+
             if (QuikApi.TRANS2QUIK_SUCCESS
                 == QuikApi.Connect(PathToQuik))
             {
-                OnConnected(this, null);
                 QuikApi.MultiSubscribe();
+                OnConnected(this, null);
 
                 return true;
             }
@@ -82,7 +82,7 @@ namespace QuikConnector
             return false;
         }
 
-        public bool Disconnect()
+        public bool TryDisconnect()
         {
             if (QuikApi.TRANS2QUIK_SUCCESS
                 == QuikApi.Disconnect())
@@ -116,7 +116,7 @@ namespace QuikConnector
 
         public void Dispose()
         {
-            if (IsConnected) Disconnect();
+            if (IsConnected) TryDisconnect();
 
             QuikApi.OrderCallback -= OnOrderCallback;
             QuikApi.TradeCallBack -= OnTradeCallback;

@@ -38,7 +38,6 @@ namespace QuikConnector.API
         private static string _stopExportMenuItem = "Остановить экспорт таблиц по &DDE";
         private static string _startExportByDDEMenuItem = "Начать экспорт таблиц по &DDE";
 
-        // ReSharper disable InconsistentNaming
         [DllImport("user32.dll")]
         static extern IntPtr GetMenu(IntPtr hWnd);
 
@@ -58,15 +57,15 @@ namespace QuikConnector.API
         [DllImport("user32.dll", SetLastError = true)]
         static extern bool PostMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
 
-        private const UInt32 MF_BYPOSITION = 0x00000400;
+        private const uint MF_BYPOSITION = 0x00000400;
 
         public static bool StartDDE()
         {
             IntPtr[] quikWindows = FindQuikWindow();
+
             if (quikWindows.Length == 0)
-            {
                 return false;
-            }
+            
             foreach (var quikWindow in quikWindows)
             {
                 IntPtr mainMenu = GetMenu(quikWindow);
@@ -84,10 +83,9 @@ namespace QuikConnector.API
         public static bool StopDDE()
         {
             IntPtr[] quikWindows = FindQuikWindow();
+
             if (quikWindows.Length == 0)
-            {
-                return false;
-            }
+                return false;        
 
             foreach (var quikWindow in quikWindows)
             {
@@ -107,16 +105,19 @@ namespace QuikConnector.API
         {
             Process[] processes = Process.GetProcessesByName("info");
             IntPtr[] result = new IntPtr[processes.Length];
+
             for (int i = 0; i < processes.Length; i++)
             {
                 result[i] = processes[i].MainWindowHandle;
             }
+
             return result;
         }
 
         private static uint FindMenuItemByPart(IntPtr menu, string name)
         {
             int menuItemsCount = GetMenuItemCount(menu);
+
             for (uint menuIndex = 0; menuIndex < menuItemsCount; menuIndex++)
             {
                 StringBuilder result = new StringBuilder(1024);
@@ -127,6 +128,7 @@ namespace QuikConnector.API
                     return menuIndex;
                 }
             }
+
             return 0;
         }
 

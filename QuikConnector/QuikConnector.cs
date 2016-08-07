@@ -33,21 +33,12 @@ namespace QuikConnector.Core
 {
     public class QConnector : IDisposable
     {
-        public string Account
-        {
-            get
-            {
-                return connection.Account;
-            }
-            set
-            {
-                connection.Account = value;
-            }
-        }
+        private QuikConnection _connection;
+        private QDataServer _server;
 
-        private QuikConnection connection;
-
-        private QDataServer server;
+        public List<OrderChannel> OrderChannels => _connection.Channels;
+        public Dictionary<string, DataChannel> DataChannels => _server.Channels;
+        public string Account => _connection.Account;
 
         #region EVENTS
 
@@ -83,20 +74,15 @@ namespace QuikConnector.Core
 
         #endregion
 
-        public List<OrderChannel> OrderChannels => connection.Channels;
-
-        public Dictionary<string, DataChannel> DataChannels => server.Channels;
-
-
         public QConnector(ConnectorParameters parameters)
         {
-            connection = new QuikConnection(parameters.PathToQuik, parameters.Account);
-            server = new QDataServer(parameters.ServerName);
+            _connection = new QuikConnection(parameters.PathToQuik, parameters.Account);
+            _server = new QDataServer(parameters.ServerName);
         }
 
-        public bool Connect()
+        public bool TryConnect()
         {
-            if (connection.Connect())
+            if (_connection.TryConnect())
             {
                 OnConnected(this, null);
 
@@ -106,9 +92,9 @@ namespace QuikConnector.Core
             return false;
         }
 
-        public bool Disconnect()
+        public bool TryDisconnect()
         {
-            if (connection.Disconnect())
+            if (_connection.TryDisconnect())
             {
                 OnDisconnected(this, null);
 
@@ -120,7 +106,7 @@ namespace QuikConnector.Core
 
         public void StartImport()
         {
-            server.Register();
+            _server.Register();
 
             Terminal.StartDDE();
 
@@ -129,7 +115,7 @@ namespace QuikConnector.Core
 
         public void StopImport()
         {
-            server.Unregister();
+            _server.Unregister();
 
             Terminal.StopDDE();
 
@@ -138,7 +124,7 @@ namespace QuikConnector.Core
 
         public void AddDataChannel(string key, DataChannel value)
         {
-            server.Channels.Add(key, value);
+            _server.Channels.Add(key, value);
 
             OnDataChannelAdded(this, value);
         }
@@ -159,7 +145,7 @@ namespace QuikConnector.Core
 
         public bool RemoveDataChannel(string key)
         {
-            if (server.Channels.Remove(key))
+            if (_server.Channels.Remove(key))
             {
                 OnDataChannelRemoved(this, null);
 
@@ -181,21 +167,21 @@ namespace QuikConnector.Core
 
         public void AddOrderChannel(OrderChannel channel)
         {
-            connection.Subscribe(channel);
+            _connection.Subscribe(channel);
 
             OnOrderChannelAdded(this, channel);
         }
 
         public void RemoveOrderChannel(string secCode)
         {
-            connection.Unsubscribe(i => i.SecCode == secCode);
+            _connection.Unsubscribe(i => i.SecCode == secCode);
 
             OnOrderChannelRemoved(this, null);
         }
 
         public bool RemoveOrderChannel(OrderChannel channel)
         {
-            if (connection.Channels.Remove(channel))
+            if (_connection.Channels.Remove(channel))
             {
                 OnOrderChannelRemoved(this, channel);
 
@@ -207,7 +193,7 @@ namespace QuikConnector.Core
 
         public OrderChannel CreateOrderChannel(string secCode, string classCode)
         {
-            var channel = connection.CreateOrderChannel(secCode, classCode);
+            var channel = _connection.CreateOrderChannel(secCode, classCode);
 
             if (channel != null)
             {
@@ -219,9 +205,9 @@ namespace QuikConnector.Core
 
         public void Dispose()
         {
-            if (connection != null) connection.Dispose();
+            if (_connection != null) _connection.Dispose();
 
-            if (server != null) server.Dispose();
+            if (_server != null) _server.Dispose();
 
             OnDisposed(this, null);
         }
