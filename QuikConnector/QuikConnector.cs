@@ -39,12 +39,9 @@ namespace QuikConnector.Core
         public List<OrderChannel> OrderChannels => _connection.Channels;
         public Dictionary<string, DataChannel> DataChannels => _server.Channels;
         public string Account => _connection.Account;
+        public QuikConnection Connection => _connection;
 
         #region EVENTS
-
-        public event EventHandler Connected;
-        public event EventHandler Disconnected;
-        public event EventHandler<ConnectionStatusEventArgs> ConnectionStatusChanged;
 
         public event EventHandler ImportStarted;
         public event EventHandler ImportStopped;
@@ -58,9 +55,6 @@ namespace QuikConnector.Core
 
         public event EventHandler Disposed;
 
-
-        protected virtual void OnConnected(object sender, EventArgs e) => Connected?.Invoke(sender, e);
-        protected virtual void OnDisconnected(object sender, EventArgs e) => Disconnected?.Invoke(sender, e);
         protected virtual void OnImportStarted(object sender, EventArgs e) => ImportStarted?.Invoke(sender, e);
         protected virtual void OnImportStopped(object sender, EventArgs e) => ImportStopped?.Invoke(sender, e);
         protected virtual void OnOrderChannelAdded(object sender, OrderChannel e) => OrderChannelAdded?.Invoke(sender, e);
@@ -68,7 +62,6 @@ namespace QuikConnector.Core
         protected virtual void OnOrderChannelCreated(object sender, OrderChannel e) => OrderChannelCreated?.Invoke(sender, e);
         protected virtual void OnDataChannelAdded(object sender, DataChannel e) => DataChannelAdded?.Invoke(sender, e);
         protected virtual void OnDataChannelRemoved(object sender, EventArgs e)  => DataChannelRemoved?.Invoke(sender, e);
-        protected virtual void OnConnectionStatusChanged(object sender, ConnectionStatusEventArgs e) => ConnectionStatusChanged?.Invoke(sender, e);
         protected virtual void OnDisposed(object sender, EventArgs e) => Disposed?.Invoke(sender, e);
 
 
@@ -80,52 +73,26 @@ namespace QuikConnector.Core
             _server = new QDataServer(parameters.ServerName);
         }
 
-        public bool TryConnect()
-        {
-            if (_connection.TryConnect())
-            {
-                OnConnected(this, null);
-
-                return true;
-            }
-
-            return false;
-        }
-
-        public bool TryDisconnect()
-        {
-            if (_connection.TryDisconnect())
-            {
-                OnDisconnected(this, null);
-
-                return true;
-            }
-
-            return false;
-        }
+        public void Connect() => _connection.Connect();
+        public void Disconnect() => _connection.Disconnect();
 
         public void StartImport()
         {
             _server.Register();
-
             Terminal.StartDDE();
-
             OnImportStarted(this, null);
         }
 
         public void StopImport()
         {
             _server.Unregister();
-
             Terminal.StopDDE();
-
             OnImportStopped(this, null);
         }
 
         public void AddDataChannel(string key, DataChannel value)
         {
             _server.Channels.Add(key, value);
-
             OnDataChannelAdded(this, value);
         }
 

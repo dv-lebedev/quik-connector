@@ -41,24 +41,24 @@ namespace QuikConnector.Examples
                 ddeServerName: "QServer");
 
 
-            using (QConnector connector = new QConnector(parameters))
+            using (var QUIK = new QConnector(parameters))
             {
-                connector.Connected += (sender, e) => { Console.WriteLine("Connected."); };
+                QUIK.Connection.Connected += (sender, e) => { Console.WriteLine("Connected."); };
 
-                connector.ImportStarted += (sender, e) => { Console.WriteLine("Import started."); };
+                QUIK.ImportStarted += (sender, e) => { Console.WriteLine("Import started."); };
 
-                connector.TryConnect();
-                connector.StartImport();
+                QUIK.Connect();
+                QUIK.StartImport();
 
 
-                IDataTable<Security> securitiesTable = connector.AddDataTable<Security>();
+                IDataTable<Security> securitiesTable = QUIK.AddDataTable<Security>();
 
                 securitiesTable.Updated += securitiesTable_Updated;
 
                 Console.ReadLine();
 
 
-                OrderChannel lkoh = connector.CreateOrderChannel("LKOH", "EQBR");
+                OrderChannel lkoh = QUIK.CreateOrderChannel("LKOH", "EQBR");
 
                 OrderResult result = lkoh.SendTransaction(Direction.Buy, price: 3000.00M, volume: 1);
                 

@@ -32,9 +32,6 @@ namespace QuikConnector
         public uint nExtendedErrorCode { get; set; }
         public byte[] lpstrInfoMessage { get; set; }
 
-        public override string ToString()
-        {
-            return QuikApi.ResultToString(nConnectionEvent);
-        }
+        public override string ToString() => QuikApi.ResultToString(nConnectionEvent); 
     }
 }

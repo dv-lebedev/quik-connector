@@ -1,7 +1,7 @@
 # QuikConnector
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![.Net version](https://img.shields.io/badge/.NET%20Framework-v4.6-red.svg)
+![.Net version](https://img.shields.io/badge/.NET%20Framework-v4.6.1-brightgreen.svg)
 
 Quik settings in 'info.wnd'
 
@@ -32,24 +32,24 @@ namespace QuikConnector.Examples
                 ddeServerName: "QServer");
 
 
-            using (QConnector connector = new QConnector(parameters))
+            using (var QUIK = new QConnector(parameters))
             {
-                connector.Connected += (sender, e) => { Console.WriteLine("Connected."); };
+                QUIK.Connection.Connected += (sender, e) => { Console.WriteLine("Connected."); };
 
-                connector.ImportStarted += (sender, e) => { Console.WriteLine("Import started."); };
+                QUIK.ImportStarted += (sender, e) => { Console.WriteLine("Import started."); };
 
-                connector.TryConnect();
-                connector.StartImport();
+                QUIK.Connect();
+                QUIK.StartImport();
 
 
-                IDataTable<Security> securitiesTable = connector.AddDataTable<Security>();
+                IDataTable<Security> securitiesTable = QUIK.AddDataTable<Security>();
 
                 securitiesTable.Updated += securitiesTable_Updated;
 
                 Console.ReadLine();
 
 
-                OrderChannel lkoh = connector.CreateOrderChannel("LKOH", "EQBR");
+                OrderChannel lkoh = QUIK.CreateOrderChannel("LKOH", "EQBR");
 
                 OrderResult result = lkoh.SendTransaction(Direction.Buy, price: 3000.00M, volume: 1);
                 
@@ -88,6 +88,7 @@ namespace QuikConnector.Examples
         public decimal Lot { get; set; }
     }
 }
+
 
 ```
 

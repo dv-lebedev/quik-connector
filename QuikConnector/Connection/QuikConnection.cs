@@ -34,7 +34,7 @@ namespace QuikConnector
         public string PathToQuik { get; }
         public string Account { get; }
 
-        public List<OrderChannel> Channels { get; protected set; }
+        public List<OrderChannel> Channels { get; }
 
         public event EventHandler Connected;
         public event EventHandler Disconnected;
@@ -65,7 +65,7 @@ namespace QuikConnector
         }
 
 
-        public bool TryConnect()
+        public void Connect()
         {
             if (IsConnected)
                 throw new Exception("It has been connected already.");
@@ -75,25 +75,17 @@ namespace QuikConnector
             {
                 QuikApi.MultiSubscribe();
                 OnConnected(this, null);
-
-                return true;
             }
-
-            return false;
         }
 
-        public bool TryDisconnect()
+        public void Disconnect()
         {
             if (QuikApi.TRANS2QUIK_SUCCESS
                 == QuikApi.Disconnect())
             {
                 OnDisconnected(this, null);
-                return true;
             }
-
-            return false;
         }
-
 
         public OrderChannel CreateOrderChannel(string secCode, string classCode)
         {
@@ -103,7 +95,6 @@ namespace QuikConnector
 
             return channel;
         }
-
 
         public void Subscribe(OrderChannel channel) => Channels.Add(channel);
 
@@ -116,7 +107,7 @@ namespace QuikConnector
 
         public void Dispose()
         {
-            if (IsConnected) TryDisconnect();
+            if (IsConnected) Disconnect();
 
             QuikApi.OrderCallback -= OnOrderCallback;
             QuikApi.TradeCallBack -= OnTradeCallback;
