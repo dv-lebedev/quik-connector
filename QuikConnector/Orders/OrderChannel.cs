@@ -136,7 +136,12 @@ namespace QuikConnector
         
         public OrderResult Sell(decimal price, int volume, string clientcode = "") => SendTransaction(Direction.Sell, price, volume, clientcode);
         public OrderResult Sell(int volume, string clientcode = "") => SendTransaction(Direction.Sell, volume, clientcode);
-        
+
+        public OrderResult KillOrder(OrderResult orderResult)
+        {
+            return KillOrder(orderResult.TransId, orderResult.OrderNumber);
+        }
+
         public OrderResult KillOrder(long transId, double orderNum)
         {
             if (!Orders.ContainsKey(orderNum))

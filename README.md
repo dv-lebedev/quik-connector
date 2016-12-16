@@ -34,9 +34,9 @@ namespace QuikConnector.Examples
 
             using (var QUIK = new QConnector(parameters))
             {
-                QUIK.Connection.Connected += (sender, e) => { Console.WriteLine("Connected."); };
+                QUIK.Connection.Connected += (sender, e) => Console.WriteLine("Connected.");
 
-                QUIK.ImportStarted += (sender, e) => { Console.WriteLine("Import started."); };
+                QUIK.ImportStarted += (sender, e) => Console.WriteLine("Import started.");
 
                 QUIK.Connect();
                 QUIK.StartImport();
@@ -53,7 +53,7 @@ namespace QuikConnector.Examples
 
                 OrderResult result = lkoh.SendTransaction(Direction.Buy, price: 3000.00M, volume: 1);
                 
-                lkoh.KillOrder(result.TransId, result.OrderNumber);
+                lkoh.KillOrder(result);
 
                 Console.ReadLine();
             }
