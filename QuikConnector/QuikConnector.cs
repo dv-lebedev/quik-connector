@@ -79,14 +79,12 @@ namespace QuikConnector.Core
         public void StartImport()
         {
             _server.Register();
-            Terminal.StartDDE();
             OnImportStarted(this, null);
         }
 
         public void StopImport()
         {
             _server.Unregister();
-            Terminal.StopDDE();
             OnImportStopped(this, null);
         }
 
@@ -164,7 +162,7 @@ namespace QuikConnector.Core
 
             if (channel != null)
             {
-                OrderChannelCreated(this, channel);
+                OnOrderChannelCreated(this, channel);
             }
 
             return channel;

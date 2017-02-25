@@ -57,7 +57,6 @@ namespace QuikConnector.Examples
 
                 Console.ReadLine();
 
-
                 OrderChannel lkoh = QUIK.CreateOrderChannel("LKOH", "EQBR");
                 
                 OrderResult result = lkoh.SendTransaction(Direction.Buy, price: 3000.00M, volume: 1);
