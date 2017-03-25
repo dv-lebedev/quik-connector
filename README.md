@@ -5,7 +5,7 @@
 
 Quik settings in 'info.wnd'
 
-##Functionality
+## Functionality
 - send orders and monitor their execution by channel of orders
 - get real-time market data
 - control connection to Quik
@@ -92,7 +92,7 @@ namespace QuikConnector.Examples
 
 ```
 
-##Dependencies
+## Dependencies
 - NDde
 
 ## License
